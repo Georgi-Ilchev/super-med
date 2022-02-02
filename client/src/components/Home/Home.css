@@ -1,0 +1,33 @@
+.home-container{
+    /* background: url('../../../public/home-doctors.png');
+    background-repeat: no-repeat;
+    background-size: cover; */
+
+    /* padding-top: 10rem; */
+
+    /* 2 */
+    /* position: relative;
+    background-image: url("../../../public/home-doctors.png");
+    background-repeat:no-repeat;
+    background-size:100% 100vh; */
+
+    /* 3 */
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-image: url('../../../public/home-wallpaper.png');
+    top: 0;
+}
+
+.home-message{
+    padding-top: 18rem;
+    text-align: center;
+    font-size: 70px;
+    color: bisque;
+}
+
+.home-typical{
+    font-size: 85px;
+    color:bisque
+}

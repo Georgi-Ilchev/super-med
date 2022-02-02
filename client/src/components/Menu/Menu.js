@@ -6,7 +6,7 @@ const Menu = () => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
             <Container>
-                <Navbar.Brand>SuperMedical</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">SuperMedical</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
@@ -21,10 +21,13 @@ const Menu = () => {
                         </NavDropdown>
                     </Nav>
                     <Nav>
-                        <Nav.Link href="#deets">Account</Nav.Link>
-                        <Nav.Link eventKey={2} href="#memes">
-                            Dank memes
-                        </Nav.Link>
+                        <Navbar.Text >
+                            Wellcome,
+                        </Navbar.Text>
+                        <Nav.Link as={Link} to="/">Account</Nav.Link>
+                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                        <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                        <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
