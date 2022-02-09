@@ -16,3 +16,12 @@
     text-align: left;
     margin-left: 6rem;
 }
+
+.categories-header-card{
+    margin-left: 40rem;
+}
+
+.no-doctors-message{
+    font-size: 50px;
+    margin-top: 10rem;
+}
