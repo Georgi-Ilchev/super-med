@@ -6,6 +6,7 @@ import { Route, Link, NavLink, Navigate, useNavigate, Routes } from 'react-route
 import style from './Login.css';
 
 const Login = () => {
+    const navigate = useNavigate();
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [passwordError, setpasswordError] = useState("");
@@ -31,12 +32,8 @@ const Login = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                console.log(userCredential);
-                console.log('----------');
-                console.log(user);
 
-                //redirect
-                return <Navigate replace to="/"></Navigate>
+                navigate("/");
             })
             .catch(error => {
                 const errorCode = error.code;

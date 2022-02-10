@@ -2,9 +2,11 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 import React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import style from './Register.css';
 
 const Register = () => {
+    const navigate = useNavigate();
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [passwordError, setpasswordError] = useState("");
@@ -66,6 +68,7 @@ const Register = () => {
                 console.log(userCredential);
                 console.log('----------');
                 console.log(user);
+                navigate("/");
             })
             .catch(error => {
                 const errorCode = error.code;
@@ -112,7 +115,7 @@ const Register = () => {
                                 <div className="form-group">
                                     <label>Repeat Password</label>
                                     <input
-                                        type="re-password"
+                                        type="password"
                                         className="form-control"
                                         id="exampleInputPassword1"
                                         name="re-password"

@@ -5,19 +5,6 @@ import { getAuth, signOut } from 'firebase/auth';
 
 
 const Menu = () => {
-    const onLogout = (props) => {
-        const auth = getAuth();
-
-        signOut(auth)
-            .then(() => {
-                console.log('from signOut , i have to redirect');
-                useNavigate("/");
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
-
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
             <Container>
@@ -42,8 +29,7 @@ const Menu = () => {
                         <Nav.Link as={Link} to="/">Account</Nav.Link>
                         <Nav.Link as={Link} to="/login">Login</Nav.Link>
                         <Nav.Link as={Link} to="/register">Register</Nav.Link>
-                        {/* <Nav.Link as={Link} to="/logout">Logout</Nav.Link> */}
-                        <Button onClick={onLogout}>Logout</Button>
+                        <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
