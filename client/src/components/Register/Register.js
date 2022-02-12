@@ -19,40 +19,31 @@ const Register = () => {
     const [rePass, setRePass] = useState("");
     const [rePassError, setRePassError] = useState("");
 
-    const handleValidation = (event) => {
-        let formIsValid = true;
+    let formValidation;
 
+    const handleValidation = (event) => {
+        formValidation = true;
+        setemailError("");
+        setpasswordError("");
+        setRePassError("");
         if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-            formIsValid = false;
+            formValidation = false;
             setemailError("Email Not Valid");
-            return false;
-        } else {
-            setemailError("");
-            formIsValid = true;
         }
 
         if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-            formIsValid = false;
+            formValidation = false;
             setpasswordError(
                 "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
             );
-            return false;
-        } else {
-            setpasswordError("");
-            formIsValid = true;
         }
 
         if (password != rePass) {
+            formValidation = false;
             setRePassError(
                 "Password dont match!"
             );
-            return false;
-        } else {
-            setRePassError("");
-            formIsValid = true;
         }
-
-        return formIsValid;
     };
 
     const onRegisterSubmit = async (e) => {
@@ -70,8 +61,16 @@ const Register = () => {
 
         if (!dataUsers.empty) {
             setemailError("Email already exist!");
+            formValidation = false;
             return [];
         }
+
+        if (!formValidation) {
+            console.log(formValidation);
+            return;
+        }
+
+        console.log('validation is true');
 
         setAllUser(dataUsers.docs.map(u => console.log(u)));
 
