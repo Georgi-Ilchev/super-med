@@ -21,11 +21,12 @@ const Register = () => {
 
     let formValidation;
 
-    const handleValidation = (event) => {
+    const handleValidation = () => {
         formValidation = true;
         setemailError("");
         setpasswordError("");
         setRePassError("");
+
         if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
             formValidation = false;
             setemailError("Email Not Valid");
@@ -48,7 +49,7 @@ const Register = () => {
 
     const onRegisterSubmit = async (e) => {
         e.preventDefault();
-        handleValidation(e);
+        handleValidation();
 
         const email = e.target.email.value;
         const password = e.target.password.value;
@@ -56,8 +57,6 @@ const Register = () => {
         const users = collection(db, 'users');
         const q = query(users, where("email", "==", email));
         const dataUsers = await getDocs(q);
-
-        // console.log(dataUsers);
 
         if (!dataUsers.empty) {
             setemailError("Email already exist!");
@@ -69,8 +68,6 @@ const Register = () => {
             console.log(formValidation);
             return;
         }
-
-        console.log('validation is true');
 
         setAllUser(dataUsers.docs.map(u => console.log(u)));
 
