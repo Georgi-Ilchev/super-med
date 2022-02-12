@@ -1,6 +1,6 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../utils/firebase.js';
 
@@ -19,24 +19,22 @@ const Login = () => {
         return formIsValid;
     };
 
-    const onLoginSubmit = async (e) => {
+    const onLoginSubmit = useCallback(async (e) => {
         e.preventDefault();
         handleValidation();
 
         const email = e.target.email.value;
         const password = e.target.password.value;
 
-
         try {
             await signInWithEmailAndPassword(auth, email, password);
             navigate("/");
         } catch (error) {
-            console.log('error');
             setError("Invalid login attempt");
             const errorCode = error.code;
             const errorMessage = error.message;
         }
-    };
+    }, []);
 
     return (
         <section className="login-section">

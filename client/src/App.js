@@ -10,6 +10,7 @@ import Logout from './components/Logout/Logout.js';
 import Categories from './components/Categories/Categories.js';
 import DoctorDetails from './components/DoctorDetails/DoctorDetails.js';
 import NotFound from './components/NotFound/NotFound.js';
+import CreateDoctor from './components/CreateDoctor/CreateDoctor.js';
 
 // import { getAuth, signOut } from 'firebase/auth';
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/doctors" element={<Categories />}></Route>
           <Route path="/doctors/:category" element={<Categories />}></Route>
           <Route path="/doctors/:doctorId/details" element={<DoctorDetails />}></Route>
+          <Route path="/createdoc" element={<CreateDoctor />}></Route >
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </AuthProvider>

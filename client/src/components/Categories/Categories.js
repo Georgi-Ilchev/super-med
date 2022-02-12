@@ -6,22 +6,30 @@ import * as doctorService from "../../services/doctorService.js";
 
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { db } from '../../utils/firebase.js';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+
 
 import style from './Categories.css';
 
 const Categories = () => {
     let params = useParams();
-    console.log(params.category);
+    // console.log(params.category);
 
-    const [doctors, setDoctors] = useState([]);
-
+    const [dataDoctors, setDataDoctors] = useState([]);
 
     useEffect(() => {
-        
-    }, [doctors]);
+        (async () => {
+            const doctors = collection(db, 'doctors');
+            const q = query(doctors, where("type", "==", params.category));
+            const dataUsers = await getDocs(q);
+            setDataDoctors(dataUsers.docs.map(x => x.data()));
+        })();
+    }, [params.category]);
 
-    console.log(doctors);
+    console.log(dataDoctors);
 
+    // dataDoctors.map(x => console.log(x));
 
     return (
         <section className="categories-container">
@@ -37,8 +45,8 @@ const Categories = () => {
                 </div>
 
                 <ul>
-                    {doctors.length > 0
-                        ? doctors.map(x =>
+                    {dataDoctors.length > 0
+                        ? dataDoctors.map(x =>
                             <DoctorCard key={x.id} data={x} />)
                         : <div>
                             <p className="no-doctors-message">There are no doctors added in this field yet</p>
