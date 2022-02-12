@@ -1,12 +1,14 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-import React from 'react';
-import { useState } from 'react';
-import { Route, Link, NavLink, Navigate, useNavigate, Routes } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../../utils/firebase.js';
+
 import style from './Login.css';
 
 const Login = () => {
     const navigate = useNavigate();
+
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [passwordError, setpasswordError] = useState("");
@@ -18,27 +20,21 @@ const Login = () => {
         return formIsValid;
     };
 
-    const onLoginSubmit = (e) => {
+    const onLoginSubmit = async (e) => {
         e.preventDefault();
         handleValidation();
 
         const email = e.target.email.value;
         const password = e.target.password.value;
 
-        console.log(email);
-        console.log(password);
 
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-
-                navigate("/");
-            })
-            .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-            });
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            navigate("/");
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        }
     };
 
     return (

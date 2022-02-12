@@ -17,11 +17,8 @@ const Categories = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:5000/doctors')
-            .then(res => res.json())
-            .then(doctors => setDoctors(doctors)
-                .catch(err => console.log(err)))
-    }, []);
+        
+    }, [doctors]);
 
     console.log(doctors);
 

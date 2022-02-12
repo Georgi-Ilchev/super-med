@@ -1,9 +1,12 @@
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import style from './Register.css';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+import { auth, db } from '../../utils/firebase.js';
+import './Register.css';
+
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -11,6 +14,7 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [passwordError, setpasswordError] = useState("");
     const [emailError, setemailError] = useState("");
+    const [allUsers, setAllUser] = useState(null);
 
     const [rePass, setRePass] = useState("");
     const [rePassError, setRePassError] = useState("");
@@ -51,29 +55,39 @@ const Register = () => {
         return formIsValid;
     };
 
-    const onRegisterSubmit = (e) => {
+    const onRegisterSubmit = async (e) => {
         e.preventDefault();
-        handleValidation();
+        handleValidation(e);
 
         const email = e.target.email.value;
         const password = e.target.password.value;
 
-        console.log(email);
-        console.log(password);
+        const users = collection(db, 'users');
+        const q = query(users, where("email", "==", email));
+        const dataUsers = await getDocs(q);
 
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(userCredential);
-                console.log('----------');
-                console.log(user);
-                navigate("/");
-            })
-            .catch(error => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
+        // console.log(dataUsers);
+
+        if (!dataUsers.empty) {
+            setemailError("Email already exist!");
+            return [];
+        }
+
+        setAllUser(dataUsers.docs.map(u => console.log(u)));
+
+        try {
+            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+
+            await setDoc(doc(db, "users", userCredentials.user.uid), {
+                email,
             });
+
+            navigate("/");
+
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        }
     };
 
     return (
@@ -123,7 +137,7 @@ const Register = () => {
                                         onChange={(event) => setRePass(event.target.value)}
                                     />
                                     <small id="passworderror" className="text-danger form-text">
-                                        {passwordError}
+                                        {rePassError}
                                     </small>
                                 </div>
                                 <div className="form-group form-check">

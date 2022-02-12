@@ -1,10 +1,10 @@
-import { Route, Link, NavLink, Navigate, useNavigate, Routes } from 'react-router-dom';
-import { Navbar, Offcanvas, NavDropdown, Nav, Form, Button, Container, FormControl } from 'react-bootstrap';
-
-import { getAuth, signOut } from 'firebase/auth';
-
+import { Link } from 'react-router-dom';
+import { Navbar, NavDropdown, Nav, Container, FormControl } from 'react-bootstrap';
+import { useAuth } from "../../contexts/AuthContext.js";
 
 const Menu = () => {
+    const { currentUser } = useAuth();
+
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
             <Container>
@@ -23,13 +23,19 @@ const Menu = () => {
                         </NavDropdown>
                     </Nav>
                     <Nav>
-                        <Navbar.Text >
-                            Wellcome,
-                        </Navbar.Text>
-                        <Nav.Link as={Link} to="/">Account</Nav.Link>
-                        <Nav.Link as={Link} to="/login">Login</Nav.Link>
-                        <Nav.Link as={Link} to="/register">Register</Nav.Link>
-                        <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
+                        {currentUser ? <>
+                            <Navbar.Text >
+                                Wellcome, {currentUser?.email}
+                            </Navbar.Text>
+                            <Nav.Link as={Link} to="/">Account</Nav.Link>
+                            <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
+                        </> : null
+                        }
+
+                        {!currentUser ? <>
+                            <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                            <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                        </> : null}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

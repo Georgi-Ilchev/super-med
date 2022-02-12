@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyC4OpTu58Xbd_ju6dLUG1t1_RJVyRa68CU",
@@ -12,13 +13,5 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-onAuthStateChanged(auth, user => {
-    if (user) {
-        console.log(('logged in'));
-        console.log(user);
-    } else {
-        console.log('Logged out');
-    }
-});
+export const db = getFirestore();
+export const auth = getAuth(app);

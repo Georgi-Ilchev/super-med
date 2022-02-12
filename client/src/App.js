@@ -1,6 +1,7 @@
 import './App.css';
 import './utils/firebase.js';
 
+import AuthProvider from './contexts/AuthContext.js';
 import Menu from './components/Menu/Menu.js';
 import Home from './components/Home/Home.js';
 import Login from './components/Login/Login.js';
@@ -18,18 +19,20 @@ function App() {
   return (
 
     <div className="App">
-      <Menu></Menu>
+      <AuthProvider>
+        <Menu></Menu>
 
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/logout" element={<Logout />}></Route>
-        <Route path="/doctors" element={<Categories />}></Route>
-        <Route path="/doctors/:category" element={<Categories />}></Route>
-        <Route path="/doctors/:doctorId/details" element={<DoctorDetails />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
+          <Route path="/logout" element={<Logout />}></Route>
+          <Route path="/doctors" element={<Categories />}></Route>
+          <Route path="/doctors/:category" element={<Categories />}></Route>
+          <Route path="/doctors/:doctorId/details" element={<DoctorDetails />}></Route>
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+      </AuthProvider>
     </div >
   );
 }
