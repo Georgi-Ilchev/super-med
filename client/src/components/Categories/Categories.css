@@ -5,10 +5,10 @@
     background-size: cover;
     background-image: url('../../../public/categories-wallpaper.png');
     top: 0;
-
 }
 
 .categories-searching-msg{
+    text-align: center;
     padding-top: 7rem;
 }
 
@@ -19,9 +19,14 @@
 
 .categories-header-card{
     margin-left: 40rem;
+    text-align: center;
 }
 
 .no-doctors-message{
     font-size: 50px;
     margin-top: 10rem;
+    text-align: center;
+}
+
+.categories-doctors-lists{
 }

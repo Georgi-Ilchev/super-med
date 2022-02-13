@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 const HeaderCard = ({
     category
 }) => {
-    console.log(category + 'header category');
+    console.log(category + ' header category');
     return (
         <Card
             border="primary"

@@ -18,6 +18,7 @@
     background-size: cover;
     background-image: url('../../../public/home-wallpaper.png');
     top: 0;
+    text-align: center;
 }
 
 .home-message{

@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebase.js';
 
 const CreateDoctor = () => {
@@ -6,18 +6,17 @@ const CreateDoctor = () => {
         paddingTop: '5rem',
     }
 
-
     const onCreate = async () => {
-        await setDoc(doc(db, "doctors", 'userid'), {
-            firstName: "pesho",
-            lastName: "goshov",
+        await setDoc(doc(db, "doctors", 'useridasdds'), {
+            firstName: "pesho1",
+            lastName: "goshov2",
             age: "43",
             type: "allergists",
             hospital: "st. Anna"
         });
+
+        console.log('created');
     }
-
-
 
     return (
         <form id="createForm" style={buttonStyle} onSubmit={onCreate}>
