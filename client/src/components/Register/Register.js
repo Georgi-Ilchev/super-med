@@ -11,6 +11,8 @@ import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firesto
 const Register = () => {
   const navigate = useNavigate();
 
+  let formIsValid = true;
+
   const [email, setEmail] = useState('');
 
   const [rePass, setRePass] = useState('');
@@ -21,45 +23,36 @@ const Register = () => {
 
   const [rePassError, setRePassError] = useState('');
 
-  const [formIsValid, setFormIsValid] = useState(true);
-
   const [existingUser, setExistingUser] = useState(null);
 
   const [passwordError, setPasswordError] = useState('');
 
   const handleValidation = () => {
+    setEmailError('');
+    setRePassError('');
+    setPasswordError('');
+
+    formIsValid = true;
 
     if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-      setFormIsValid(false);
+      formIsValid = false;
+
       setEmailError('Email Not Valid');
-    } else {
-      setEmailError('');
-      setFormIsValid(false);
     }
 
     if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-      setFormIsValid(false);
+      formIsValid = false;
 
-      setPasswordError(
-        'Only Letters and length must best min 8 Chracters and Max 22 Chracters'
-      );
-      return false;
-    } else {
-      setPasswordError('');
-      setFormIsValid(false);
+      setPasswordError('Only Letters and length must best min 8 Characters and Max 22 Characters');
     }
 
     if (password !== rePass) {
-      setRePassError(
-        'Password dont match!'
-      );
-      setFormIsValid(false);
+      formIsValid = false;
 
-    } else {
-      setRePassError('');
-      setFormIsValid(false);
-
+      setRePassError('Password dont match!');
     }
+
+
   };
 
   const onRegisterSubmit = async (e) => {
@@ -82,6 +75,9 @@ const Register = () => {
       return;
     }
 
+    debugger;
+
+
     dataUsers.docs.map(u => setExistingUser(u));
 
     if (existingUser) {
@@ -92,15 +88,12 @@ const Register = () => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
 
-      await setDoc(doc(db, 'users', userCredentials.user.uid), {
-        email
-      });
+      await setDoc(doc(db, 'users', userCredentials.user.uid), { email });
 
       navigate('/');
 
     } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      console.log(error);
     }
   };
 
