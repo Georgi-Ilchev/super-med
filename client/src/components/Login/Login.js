@@ -1,6 +1,6 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../utils/firebase.js';
 
@@ -11,8 +11,7 @@ const Login = () => {
 
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [passwordError, setpasswordError] = useState("");
-    const [emailError, setemailError] = useState("");
+    const [loginError, setError] = useState("");
 
     const handleValidation = (event) => {
         let formIsValid = true;
@@ -20,22 +19,22 @@ const Login = () => {
         return formIsValid;
     };
 
-    const onLoginSubmit = async (e) => {
+    const onLoginSubmit = useCallback(async (e) => {
         e.preventDefault();
         handleValidation();
 
         const email = e.target.email.value;
         const password = e.target.password.value;
 
-
         try {
             await signInWithEmailAndPassword(auth, email, password);
             navigate("/");
         } catch (error) {
+            setError("Invalid login attempt");
             const errorCode = error.code;
             const errorMessage = error.message;
         }
-    };
+    }, []);
 
     return (
         <section className="login-section">
@@ -44,6 +43,9 @@ const Login = () => {
                     <div className="row d-flex justify-content-center">
                         <div className="col-md-4">
                             <form id="loginform" onSubmit={onLoginSubmit}>
+                                <small id="emailHelp" className="text-danger form-text">
+                                    {loginError}
+                                </small>
                                 <div className="form-group">
                                     <label>Email address</label>
                                     <input
@@ -55,9 +57,6 @@ const Login = () => {
                                         placeholder="Enter email"
                                         onChange={(event) => setEmail(event.target.value)}
                                     />
-                                    <small id="emailHelp" className="text-danger form-text">
-                                        {emailError}
-                                    </small>
                                 </div>
                                 <div className="form-group">
                                     <label>Password</label>
@@ -69,9 +68,9 @@ const Login = () => {
                                         placeholder="Password"
                                         onChange={(event) => setPassword(event.target.value)}
                                     />
-                                    <small id="passworderror" className="text-danger form-text">
+                                    {/* <small id="passworderror" className="text-danger form-text">
                                         {passwordError}
-                                    </small>
+                                    </small> */}
                                 </div>
                                 <div className="form-group form-check">
                                     <input

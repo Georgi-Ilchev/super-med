@@ -1,5 +1,5 @@
 import Typical from 'react-typical';
-import style from './Home.css';
+import './Home.css';
 
 const Home = () => {
     return (

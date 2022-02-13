@@ -13,6 +13,10 @@ import AccountPage from './components/Account/AccountPage';
 import Categories from './components/Categories/Categories.js';
 import DoctorDetails from './components/DoctorDetails/DoctorDetails.js';
 
+import NotFound from './components/NotFound/NotFound.js';
+import CreateDoctor from './components/CreateDoctor/CreateDoctor.js';
+
+
 
 import { Route, Routes } from 'react-router-dom';
 
