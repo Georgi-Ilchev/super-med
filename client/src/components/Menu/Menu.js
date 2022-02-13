@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Navbar, NavDropdown, Nav, Container, FormControl } from 'react-bootstrap';
+import { Navbar, NavDropdown, Nav, Container } from 'react-bootstrap';
 import { useAuth } from "../../contexts/AuthContext.js";
 
 const Menu = () => {
@@ -15,7 +15,7 @@ const Menu = () => {
                         <Nav.Link as={Link} to="/doctors">View all doctors</Nav.Link>
                         <Nav.Link as={Link} to="/features">Appointments</Nav.Link>
                         <NavDropdown title="Help" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                            <NavDropdown.Item href="#">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
                             <NavDropdown.Divider />
@@ -27,7 +27,7 @@ const Menu = () => {
                             <Navbar.Text >
                                 Wellcome, {currentUser?.email}
                             </Navbar.Text>
-                            <Nav.Link as={Link} to="/">Account</Nav.Link>
+                            <Nav.Link as={Link} to={`/account/${currentUser?.uid}`}>Account</Nav.Link>
                             <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
                         </> : null
                         }
