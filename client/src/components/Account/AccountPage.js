@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 import './Account.css';
+import { useAuth } from '../../contexts/AuthContext';
 import { db } from '../../utils/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { Link } from 'react-router-dom';
 import defaultAvatar from '../../assets/images/avatar.png';
 
 const AccountPage = () => {
