@@ -6,14 +6,14 @@ const Menu = () => {
     const { currentUser } = useAuth();
 
     return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
+        <Navbar className='position-relative'collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
             <Container>
                 <Navbar.Brand as={Link} to="/">SuperMedical</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/doctors">View all doctors</Nav.Link>
-                        <Nav.Link as={Link} to="/features">Appointments</Nav.Link>
+                        <Nav.Link as={Link} to="/appointments">Appointments</Nav.Link>
                         <NavDropdown title="Help" id="collasible-nav-dropdown">
                             <NavDropdown.Item href="#">Action</NavDropdown.Item>
                             <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
