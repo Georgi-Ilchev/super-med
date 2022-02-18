@@ -9,151 +9,162 @@ import './Register.css';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 const Register = () => {
-    const navigate = useNavigate();
-    const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [passwordError, setpasswordError] = useState("");
-    const [emailError, setemailError] = useState("");
-    const [allUsers, setAllUser] = useState(null);
+  const navigate = useNavigate();
 
-    const [rePass, setRePass] = useState("");
-    const [rePassError, setRePassError] = useState("");
+  let formIsValid = true;
 
-    let formValidation;
+  const [email, setEmail] = useState('');
 
-    const handleValidation = () => {
-        formValidation = true;
-        setemailError("");
-        setpasswordError("");
-        setRePassError("");
+  const [rePass, setRePass] = useState('');
 
-        if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-            formValidation = false;
-            setemailError("Email Not Valid");
-        }
+  const [password, setPassword] = useState('');
 
-        if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-            formValidation = false;
-            setpasswordError(
-                "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
-            );
-        }
+  const [emailError, setEmailError] = useState('');
 
-        if (password != rePass) {
-            formValidation = false;
-            setRePassError(
-                "Password dont match!"
-            );
-        }
-    };
+  const [rePassError, setRePassError] = useState('');
 
-    const onRegisterSubmit = async (e) => {
-        e.preventDefault();
-        handleValidation();
+  const [existingUser, setExistingUser] = useState(null);
 
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+  const [passwordError, setPasswordError] = useState('');
 
-        const users = collection(db, 'users');
-        const q = query(users, where("email", "==", email));
-        const dataUsers = await getDocs(q);
+  const handleValidation = () => {
+    setEmailError('');
+    setRePassError('');
+    setPasswordError('');
 
-        if (!dataUsers.empty) {
-            setemailError("Email already exist!");
-            formValidation = false;
-            return [];
-        }
+    formIsValid = true;
 
-        if (!formValidation) {
-            console.log(formValidation);
-            return;
-        }
+    if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
+      formIsValid = false;
 
-        setAllUser(dataUsers.docs.map(u => console.log(u)));
+      setEmailError('Email Not Valid');
+    }
 
-        try {
-            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+    if (!password.match(/^[a-zA-Z]{8,22}$/)) {
+      formIsValid = false;
 
-            await setDoc(doc(db, "users", userCredentials.user.uid), {
-                email,
-            });
+      setPasswordError('Only Letters and length must best min 8 Characters and Max 22 Characters');
+    }
 
-            navigate("/");
+    if (password !== rePass) {
+      formIsValid = false;
 
-        } catch (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        }
-    };
+      setRePassError('Password dont match!');
+    }
 
-    return (
-        <section className="register-section">
-            <div className="App">
-                <div className="container">
-                    <div className="row d-flex justify-content-center">
-                        <div className="col-md-4">
-                            <form id="loginform" onSubmit={onRegisterSubmit}>
-                                <div className="form-group">
-                                    <label>Email address</label>
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        id="EmailInput"
-                                        name="email"
-                                        aria-describedby="emailHelp"
-                                        placeholder="Enter email"
-                                        onChange={(event) => setEmail(event.target.value)}
-                                    />
-                                    <small id="emailHelp" className="text-danger form-text">
-                                        {emailError}
-                                    </small>
-                                </div>
-                                <div className="form-group">
-                                    <label>Password</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="exampleInputPassword1"
-                                        name="password"
-                                        placeholder="Password"
-                                        onChange={(event) => setPassword(event.target.value)}
-                                    />
-                                    <small id="passworderror" className="text-danger form-text">
-                                        {passwordError}
-                                    </small>
-                                </div>
-                                <div className="form-group">
-                                    <label>Repeat Password</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="exampleInputPassword1"
-                                        name="re-password"
-                                        placeholder="Password"
-                                        onChange={(event) => setRePass(event.target.value)}
-                                    />
-                                    <small id="passworderror" className="text-danger form-text">
-                                        {rePassError}
-                                    </small>
-                                </div>
-                                <div className="form-group form-check">
-                                    <input
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        id="exampleCheck1"
-                                    />
-                                    <label className="form-check-label">Check me out</label>
-                                </div>
-                                <button type="submit" className="btn btn-primary">
-                                    Register
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+
+  };
+
+  const onRegisterSubmit = async (e) => {
+    e.preventDefault();
+    handleValidation();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    const users = collection(db, 'users');
+    const q = query(users, where('email', '==', email));
+    const dataUsers = await getDocs(q);
+
+    if (!dataUsers.empty) {
+      setEmailError('Email already exist!');
+      return [];
+    }
+
+    if (!formIsValid) {
+      return;
+    }
+
+    debugger;
+
+
+    dataUsers.docs.map(u => setExistingUser(u));
+
+    if (existingUser) {
+      setEmailError('This user already exist!');
+      return;
+    }
+
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+
+      await setDoc(doc(db, 'users', userCredentials.user.uid), { email });
+
+      navigate('/');
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <section className="register-section">
+      <div className="App">
+        <div className="container">
+          <div className="row d-flex justify-content-center">
+            <div className="col-md-4">
+              <form id="loginform" onSubmit={onRegisterSubmit}>
+                <div className="form-group">
+                  <label>Email address</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="EmailInput"
+                    name="email"
+                    aria-describedby="emailHelp"
+                    placeholder="Enter email"
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                  <small id="emailHelp" className="text-danger form-text">
+                    {emailError}
+                  </small>
                 </div>
+                <div className="form-group">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="exampleInputPassword1"
+                    name="password"
+                    placeholder="Password"
+                    onChange={(event) => setPassword(event.target.value)}
+                  />
+                  <small id="passworderror" className="text-danger form-text">
+                    {passwordError}
+                  </small>
+                </div>
+                <div className="form-group">
+                  <label>Repeat Password</label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="exampleInputPassword1"
+                    name="re-password"
+                    placeholder="Password"
+                    onChange={(event) => setRePass(event.target.value)}
+                  />
+                  <small id="passworderror" className="text-danger form-text">
+                    {rePassError}
+                  </small>
+                </div>
+                <div className="form-group form-check">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="exampleCheck1"
+                  />
+                  <label className="form-check-label">Check me out</label>
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  Register
+                </button>
+              </form>
             </div>
-        </section>
-    );
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Register;
