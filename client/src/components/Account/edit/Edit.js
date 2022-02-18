@@ -34,6 +34,16 @@ const EditProfile = () => {
     navigate(`/account/${params.uid}`);
   }, [email, pin, address, fullName, phoneNumber]);
 
+  useEffect(() => {
+    if (!userData) {
+      return;
+    }
+    setPin(state => userData.pin);
+    setEmail(state => userData.email);
+    setAddress(state => userData.address);
+    setFullName(state => userData.fullName);
+    setPhoneNumber(state => userData.phoneNumber);
+  }, [userData]);
 
   useEffect(() => {
     (async () => {
@@ -49,8 +59,6 @@ const EditProfile = () => {
     })();
   }, [params?.uid]);
 
-
-  debugger;
 
   return (
     <div>
