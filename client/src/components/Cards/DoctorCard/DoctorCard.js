@@ -23,7 +23,7 @@ const DoctorCard = ({
             </ListGroup>
             <Card.Body>
                 <ButtonGroup md={4}>
-                    <Button variant='warning' size='sm'>Make an appointment</Button>
+                    <Button as={Link} to={`/doctors/${id}/createappointment`} variant='warning' size='sm'>Make an appointment</Button>
                 </ButtonGroup>
                 <ButtonGroup >
                     <Button as={Link} to={`/doctors/${id}/details`} variant='secondary' size='sm'>Details</Button>
