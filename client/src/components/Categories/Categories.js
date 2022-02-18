@@ -60,16 +60,21 @@ const Categories = () => {
             </div>
 
             <ul>
+                {/* <div className="row offset-1"> */}
+
                 {dataDoctors.length > 0
                     ?
                     dataDoctors.map(x =>
 
-                        <DoctorCard key={x.id} data={x.data} >
+                        <DoctorCard key={x.id} id={x.id} data={x.data}  >
                             {/* {console.log(x)} */}
-                        </DoctorCard>)
+                        </DoctorCard>
+                    )
                     : <div>
                         <p className="no-doctors-message">There are no doctors added in this field yet</p>
                     </div>}
+                {/* </div> */}
+
             </ul>
 
 
