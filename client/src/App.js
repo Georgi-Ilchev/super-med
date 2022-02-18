@@ -9,12 +9,12 @@ import Logout from './components/Logout/Logout.js';
 import AuthProvider from './contexts/AuthContext.js';
 import Register from './components/Register/Register.js';
 import NotFound from './components/NotFound/NotFound.js';
-import EditProfile from './components/Account/Edit/Edit';
 import AccountPage from './components/Account/AccountPage';
 import Categories from './components/Categories/Categories.js';
-
+import EditProfile from './components/Account/Edit/Edit';
 import CreateDoctor from './components/CreateDoctor/CreateDoctor.js';
 import DoctorDetails from './components/DoctorDetails/DoctorDetails.js';
+import Appointments from './components/Appointments/Appointments';
 
 function App () {
   return (
@@ -33,6 +33,7 @@ function App () {
           <Route path="/doctors/:doctorId/details" element={<DoctorDetails/>}/>
           <Route path="/account/:uid" element={<AccountPage/>}/>
           <Route path="/account/:uid/edit" element={<EditProfile/>}/>
+          <Route path="/appointments" element={<Appointments/>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
       </AuthProvider>
