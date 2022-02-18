@@ -6,7 +6,7 @@ const DoctorCard = ({
     data
 }) => {
     return (
-        <Card border='primary' className='' style={{ width: '19rem' }}>
+        <Card border='primary' className='doctor-card'>
             <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
             <Card.Body>
                 <Card.Title>Dr. {data.firstName}</Card.Title>
@@ -28,7 +28,7 @@ const DoctorCard = ({
                     <Button variant='secondary' size='sm'>Details</Button>
                 </ButtonGroup>
             </Card.Body>
-        </Card>
+        </Card >
     )
 }
 

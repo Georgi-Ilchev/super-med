@@ -1,5 +1,5 @@
 import { Route, Link, NavLink, Redirect, Routes } from 'react-router-dom';
-import { FormControl, Dropdown, Container, Button } from 'react-bootstrap';
+import { FormControl, Dropdown, DropdownButton, Container, Button } from 'react-bootstrap';
 import React, { useState } from 'react';
 
 // The forwardRef is important!!
@@ -51,22 +51,16 @@ const CustomMenu = React.forwardRef(
 
 const CategoryNavigation = () => {
     return (
-        <Button variant="outline-primary">
-            <Dropdown>
-                <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                    Types
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu as={CustomMenu}>
+            <DropdownButton variant='warning' size="lg" title="Types">
+                <Dropdown as={CustomMenu}>
                     <Dropdown.Item as={Link} to="/doctors/allergists">Allergists</Dropdown.Item>
                     <Dropdown.Item as={Link} to="/doctors/anesthesiologists">Anesthesiologists</Dropdown.Item>
                     <Dropdown.Item as={Link} to="/doctors/cardiologists">Cardiologists</Dropdown.Item>
                     <Dropdown.Item as={Link} to="/doctors/dermatologists">Dermatologists</Dropdown.Item>
                     <Dropdown.Item as={Link} to="/doctors/endocrinologists">Endocrinologists</Dropdown.Item>
                     <Dropdown.Item as={Link} to="/doctors/gastroenterologists">Gastroenterologists</Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-        </Button>
+                </Dropdown>
+            </DropdownButton>
     )
 };
 

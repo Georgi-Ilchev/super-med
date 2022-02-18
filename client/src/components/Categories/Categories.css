@@ -5,6 +5,7 @@
     background-size: cover;
     background-image: url('../../../public/categories-wallpaper.png');
     top: 0;
+    overflow-y: scroll;
 }
 
 .categories-searching-msg{

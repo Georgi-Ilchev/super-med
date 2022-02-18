@@ -23,14 +23,25 @@ const Categories = () => {
                 const doctors = collection(db, 'doctors');
                 const q = query(doctors, where("type", "==", params.category));
                 const dataUsers = await getDocs(q);
-                setDataDoctors(dataUsers.docs.map(x => x.data()));
+                setDataDoctors(dataUsers.docs.map(x => (/*x.data()*/ /*x.id*/ {
+                    id: x.id,
+                    data: x.data()
+                })));
             })();
         } else {
-            // get all doctors
+            (async () => {
+                const doctors = collection(db, 'doctors');
+                const q = query(doctors);
+                const dataUsers = await getDocs(q);
+                setDataDoctors(dataUsers.docs.map(x => ({
+                    id: x.id,
+                    data: x.data()
+                })));
+            })();
         }
     }, [params.category]);
 
-    console.log(dataDoctors);
+    // console.log(dataDoctors);
 
     // dataDoctors.map(x => console.log(x));
 
@@ -52,7 +63,10 @@ const Categories = () => {
                 {dataDoctors.length > 0
                     ?
                     dataDoctors.map(x =>
-                        <DoctorCard key={x.id} data={x} />)
+
+                        <DoctorCard key={x.id} data={x.data} >
+                            {/* {console.log(x)} */}
+                        </DoctorCard>)
                     : <div>
                         <p className="no-doctors-message">There are no doctors added in this field yet</p>
                     </div>}
