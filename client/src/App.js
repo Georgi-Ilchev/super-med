@@ -1,6 +1,7 @@
 import './App.css';
-import './utils/firebase.js';
+import { Route, Routes } from 'react-router-dom';
 
+import './utils/firebase.js';
 import Menu from './components/Menu/Menu.js';
 import Home from './components/Home/Home.js';
 import Login from './components/Login/Login.js';
@@ -8,16 +9,12 @@ import Logout from './components/Logout/Logout.js';
 import AuthProvider from './contexts/AuthContext.js';
 import Register from './components/Register/Register.js';
 import NotFound from './components/NotFound/NotFound.js';
-import EditProfile from './components/Account/edit/Edit';
+import EditProfile from './components/Account/Edit/Edit';
 import AccountPage from './components/Account/AccountPage';
 import Categories from './components/Categories/Categories.js';
-import DoctorDetails from './components/DoctorDetails/DoctorDetails.js';
 
 import CreateDoctor from './components/CreateDoctor/CreateDoctor.js';
-
-
-
-import { Route, Routes } from 'react-router-dom';
+import DoctorDetails from './components/DoctorDetails/DoctorDetails.js';
 
 function App () {
   return (
