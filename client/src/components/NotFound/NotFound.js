@@ -1,10 +1,10 @@
-
+import notfound from '../../notfound.png';
+import './NotFound.css'
 
 const NotFound = () => {
     return (
-        <div>
-            <h2>Not Found</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adip.</p>
+        <div className='text-center'>
+            <img className="rounded mx-auto d-block notfoundImg" src={notfound} ></img>
         </div>
     );
 };

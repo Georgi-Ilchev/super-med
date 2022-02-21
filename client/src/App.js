@@ -14,6 +14,7 @@ import Categories from './components/Categories/Categories.js';
 import EditProfile from './components/Account/Edit/Edit';
 import CreateAppointment from './components/CreateAppointment/CreateAppointment.js';
 import DoctorDetails from './components/DoctorDetails/DoctorDetails.js';
+import Appointmentss from './components/Appointments/Appointmentss';
 import Appointments from './components/Appointments/Appointments';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
           <Route path="/account/:uid" element={<AccountPage />} />
           <Route path="/account/:uid/edit" element={<EditProfile />} />
           <Route path="/appointments" element={<Appointments />} />
+          <Route path="/appointmentss" element={<Appointmentss />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>

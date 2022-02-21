@@ -1,0 +1,18 @@
+.notfoundImg {
+    width: auto;
+    max-width: 100%;
+
+    transform: rotateY(40deg);
+    animation: two 2s infinite;
+    animation-direction: alternate;
+    filter: drop-shadow(0px 5px 5px whitesmoke);
+}
+
+@keyframes two {
+    0% {
+      transform: rotateY(0);
+    }
+    100% {
+      transform: rotateY(35deg);
+    }
+}

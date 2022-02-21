@@ -2,14 +2,10 @@ import CategoryNavigation from "./CategoryNavigation/CategoryNavigation.js";
 import DoctorCard from "../Cards/DoctorCard/DoctorCard.js";
 import HeaderCard from "../Cards/DoctorCard/HeaderCard.js";
 
-import * as doctorService from "../../services/doctorService.js";
-
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { db } from '../../utils/firebase.js';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { CardGroup } from 'react-bootstrap';
-
 
 import './Categories.css';
 

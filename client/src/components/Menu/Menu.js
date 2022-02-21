@@ -15,11 +15,8 @@ const Menu = () => {
                         <Nav.Link as={Link} to="/doctors">View all doctors</Nav.Link>
                         <Nav.Link as={Link} to="/appointments">Appointments</Nav.Link>
                         <NavDropdown title="Help" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="#">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                            <NavDropdown.Item href="#">Questions</NavDropdown.Item>
+                            <NavDropdown.Item href="#">About us</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Nav>
