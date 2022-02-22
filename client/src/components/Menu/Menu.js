@@ -1,13 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Navbar, NavDropdown, Nav, Container } from 'react-bootstrap';
 import { useAuth } from "../../contexts/AuthContext.js";
+import navbarlogo from "../../assets/images/navbarlogo.png";
 
 const Menu = () => {
     const { currentUser } = useAuth();
 
     return (
-        <Navbar className='position-relative'collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
+        <Navbar className='position-relative' collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
             <Container>
+                <Navbar.Brand>
+                    <img src={navbarlogo} style={style.navbarlogo} ></img>
+                </Navbar.Brand>
                 <Navbar.Brand as={Link} to="/">SuperMedical</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -41,3 +45,11 @@ const Menu = () => {
 };
 
 export default Menu;
+
+const style = {
+    navbarlogo: {
+        width: '30px',
+        height: '30px',
+        backgroundColor: 'white'
+    }
+}

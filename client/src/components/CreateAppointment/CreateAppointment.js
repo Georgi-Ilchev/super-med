@@ -1,9 +1,16 @@
-
+import './CreateAppointment.css';
 
 const CreateAppointment = () => {
     return (
-        < h1 >labaduba</h1 >
+        <section className='appointment-section'>
+            
+        </section>
     )
 }
 
 export default CreateAppointment;
+
+const style = {
+
+}
+
