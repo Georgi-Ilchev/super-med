@@ -1,4 +1,6 @@
-const AppointmentTable = () => {
+const AppointmentTable = ({
+    data
+}) => {
     return (
         <table className="table table-success table-striped">
             <thead>
@@ -30,7 +32,7 @@ const AppointmentTable = () => {
                 </tr>
                 <tr>
                     <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
+                    <td colSpan="2">Larry the Bird</td>
                     <td>@twitter</td>
                     <td>@24.02.1978</td>
                     <td>Active</td>
