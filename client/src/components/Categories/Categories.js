@@ -2,7 +2,7 @@ import CategoryNavigation from "./CategoryNavigation/CategoryNavigation.js";
 import DoctorCard from "../Cards/DoctorCard/DoctorCard.js";
 import HeaderCard from "../Cards/DoctorCard/HeaderCard.js";
 
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { db } from '../../utils/firebase.js';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
@@ -46,6 +46,7 @@ const Categories = () => {
 
             <div className="categories-searching-msg">
                 <h1 className="">Search your doctor</h1>
+                <p>You don't know what kind of doctor you need? <Link to='/doctors/info'>Click</Link></p>
             </div>
             <div className="categories-nav-bar">
                 <CategoryNavigation></CategoryNavigation>

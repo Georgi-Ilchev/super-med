@@ -8,7 +8,7 @@ const AppointmentTable = ({
                     <th scope="col">#</th>
                     <th scope="col">Patient</th>
                     <th scope="col">Doctor</th>
-                    <th scope="col">Hospital</th>
+                    <th scope="col">Address</th>
                     <th scope="col">Date</th>
                     <th scope="col">Status</th>
                 </tr>

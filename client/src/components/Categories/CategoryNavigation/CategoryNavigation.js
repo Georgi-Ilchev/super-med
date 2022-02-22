@@ -59,6 +59,15 @@ const CategoryNavigation = () => {
                     <Dropdown.Item as={Link} to="/doctors/dermatologists">Dermatologists</Dropdown.Item>
                     <Dropdown.Item as={Link} to="/doctors/endocrinologists">Endocrinologists</Dropdown.Item>
                     <Dropdown.Item as={Link} to="/doctors/gastroenterologists">Gastroenterologists</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/infectious">Infectious</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/oncologists">Oncologists</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/pediatricians">Pediatricians</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/physiatrists">Physiatrists</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/plastic-surgeons">Plastic Surgeons</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/psychiatrists">Psychiatrists</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/radiologists">Radiologists</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/general-surgeons">General Surgeons</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/doctors/urologists">Urologists</Dropdown.Item>
                 </Dropdown>
             </DropdownButton>
     )

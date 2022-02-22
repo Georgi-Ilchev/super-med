@@ -23,14 +23,19 @@ const DoctorCard = ({
             </ListGroup>
             <Card.Body>
                 <ButtonGroup md={4}>
-                    <Button as={Link} to={`/doctors/${id}/createappointment`} variant='warning' size='sm'>Make an appointment</Button>
+                    <Button as={Link} to={`/doctors/${id}/createappointment`} style={style.cardButton} variant='success'>Make an appointment</Button>
+                    <Button as={Link} to={`/doctors/${id}/details`} variant='secondary' >Details</Button>
                 </ButtonGroup>
-                <ButtonGroup >
-                    <Button as={Link} to={`/doctors/${id}/details`} variant='secondary' size='sm'>Details</Button>
-                </ButtonGroup>
+
             </Card.Body>
         </Card >
     )
 }
 
 export default DoctorCard;
+
+const style = {
+    cardButton: {
+        marginRight: '15px'
+    }
+}

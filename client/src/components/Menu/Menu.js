@@ -20,7 +20,7 @@ const Menu = () => {
                         <Nav.Link as={Link} to="/appointments">Appointments</Nav.Link>
                         <NavDropdown title="Help" id="collasible-nav-dropdown">
                             <NavDropdown.Item href="#">Questions</NavDropdown.Item>
-                            <NavDropdown.Item href="#">About us</NavDropdown.Item>
+                            <NavDropdown.Item href="#">Privacy policy</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Nav>
