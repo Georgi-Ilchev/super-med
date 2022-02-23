@@ -2,6 +2,8 @@ import { Route, Link, NavLink, Redirect, Routes } from 'react-router-dom';
 import { FormControl, Dropdown, DropdownButton, Container, Button } from 'react-bootstrap';
 import React, { useState } from 'react';
 
+import { Categories } from '../../../constants.js';
+
 // The forwardRef is important!!
 // Dropdown needs access to the DOM node in order to position the Menu
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
@@ -51,25 +53,28 @@ const CustomMenu = React.forwardRef(
 
 const CategoryNavigation = () => {
     return (
-            <DropdownButton variant='warning' size="lg" title="Types">
-                <Dropdown as={CustomMenu}>
-                    <Dropdown.Item as={Link} to="/doctors/allergists">Allergists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/anesthesiologists">Anesthesiologists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/cardiologists">Cardiologists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/dermatologists">Dermatologists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/endocrinologists">Endocrinologists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/gastroenterologists">Gastroenterologists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/infectious">Infectious</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/oncologists">Oncologists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/pediatricians">Pediatricians</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/physiatrists">Physiatrists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/plastic-surgeons">Plastic Surgeons</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/psychiatrists">Psychiatrists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/radiologists">Radiologists</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/general-surgeons">General Surgeons</Dropdown.Item>
-                    <Dropdown.Item as={Link} to="/doctors/urologists">Urologists</Dropdown.Item>
-                </Dropdown>
-            </DropdownButton>
+        <DropdownButton variant='warning' size="lg" title="Types">
+            <Dropdown as={CustomMenu}>
+                {/* <Dropdown.Item as={Link} to="/doctors/allergists">Allergists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/anesthesiologists">Anesthesiologists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/cardiologists">Cardiologists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/dermatologists">Dermatologists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/endocrinologists">Endocrinologists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/gastroenterologists">Gastroenterologists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/infectious">Infectious</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/oncologists">Oncologists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/pediatricians">Pediatricians</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/physiatrists">Physiatrists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/plastic-surgeons">Plastic Surgeons</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/psychiatrists">Psychiatrists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/radiologists">Radiologists</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/general-surgeons">General Surgeons</Dropdown.Item>
+                <Dropdown.Item as={Link} to="/doctors/urologists">Urologists</Dropdown.Item> */}
+                {Categories.map(x => 
+                    <Dropdown.Item key={x} as={Link} to={`/doctors/${x}`}>{x}</Dropdown.Item>
+                )}
+            </Dropdown>
+        </DropdownButton>
     )
 };
 

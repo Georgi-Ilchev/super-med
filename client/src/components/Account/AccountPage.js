@@ -61,7 +61,7 @@ const AccountPage = () => {
                   {userData?.fullName}
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div className="row">
                 <div className="col-sm-3">
                   <h6 className="mb-0">Email</h6>
@@ -70,7 +70,7 @@ const AccountPage = () => {
                   {userData?.email}
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div className="row">
                 <div className="col-sm-3">
                   <h6 className="mb-0">Phone</h6>
@@ -79,7 +79,7 @@ const AccountPage = () => {
                   {userData?.phoneNumber}
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div className="row">
                 <div className="col-sm-3">
                   <h6 className="mb-0">PIN(Personal Identification Number)</h6>
@@ -88,7 +88,7 @@ const AccountPage = () => {
                   {userData?.pin}
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div className="row">
                 <div className="col-sm-3">
                   <h6 className="mb-0">Address</h6>
@@ -97,13 +97,19 @@ const AccountPage = () => {
                   {userData?.address}
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div className="row">
                 <div className="col-sm-12">
                   <Link
                     className="btn btn-info "
                     to={`/account/${uid}/edit`}
+                    style={style.cardButton}
                   >Edit</Link>
+
+                  <Link
+                    className="btn btn-dark md-2"
+                    to={`/account/${uid}/becomedoctor`}
+                  >Become a doctor</Link>
                 </div>
               </div>
             </div>
@@ -115,6 +121,12 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
+
+const style = {
+  cardButton: {
+    marginRight: '15px'
+  }
+}
 
 /*
 * Full name
