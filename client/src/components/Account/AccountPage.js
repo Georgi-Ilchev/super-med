@@ -127,16 +127,3 @@ const style = {
     marginRight: '15px'
   }
 }
-
-/*
-* Full name
-*
-* Phone Number
-*
-* EGN
-*
-* Address
-*
-*
-*
-* */
