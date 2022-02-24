@@ -12,6 +12,7 @@ import './Categories.css';
 const Categories = () => {
     let params = useParams();
     const [dataDoctors, setDataDoctors] = useState([]);
+    const [flag, setFlag] = useState(true);
 
     useEffect(() => {
         if (params.category !== undefined) {
@@ -23,6 +24,8 @@ const Categories = () => {
                     id: x.id,
                     data: x.data()
                 })));
+
+                setFlag(false);
             })();
         } else {
             (async () => {
@@ -33,6 +36,8 @@ const Categories = () => {
                     id: x.id,
                     data: x.data()
                 })));
+
+                setFlag(false);
             })();
         }
     }, [params.category]);
@@ -60,16 +65,15 @@ const Categories = () => {
                 {/* <div className="row offset-1"> */}
 
                 {dataDoctors.length > 0
-                    ?
-                    dataDoctors.map(x =>
+                    ? dataDoctors.map(x =>
 
                         <DoctorCard key={x.id} id={x.id} data={x.data}  >
                             {/* {console.log(x)} */}
-                        </DoctorCard>
-                    )
-                    : <div>
-                        <p className="no-doctors-message">There are no doctors added in this field yet</p>
-                    </div>}
+                        </DoctorCard>)
+                    : flag ? <p className="no-doctors-message">Loading...</p>
+                           : <div>
+                               <p className="no-doctors-message">There are no doctors added in this field yet</p>
+                           </div>}
                 {/* </div> */}
 
             </ul>
