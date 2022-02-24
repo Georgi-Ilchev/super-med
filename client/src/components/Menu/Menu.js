@@ -22,6 +22,10 @@ const Menu = () => {
                             <NavDropdown.Item href="#">Questions</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/policy">Privacy policy</NavDropdown.Item>
                         </NavDropdown>
+
+                        {/* Should be only for admins! */}
+                        <Nav.Link as={Link} to="/admin/requests/becomeadoctor">Requests</Nav.Link>
+                        {/* Should be only for admins! */}
                     </Nav>
                     <Nav>
                         {currentUser ? <>
