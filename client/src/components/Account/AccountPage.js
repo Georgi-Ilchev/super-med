@@ -29,7 +29,7 @@ const AccountPage = () => {
   }, [currentUser]);
 
 
-  console.log(currentUser);
+  // console.log(currentUser);
   return (
     <div className="container mt-5">
       <div className="main-body">
@@ -109,6 +109,7 @@ const AccountPage = () => {
                   <Link
                     className="btn btn-dark md-2"
                     to={`/account/${uid}/becomedoctor`}
+                    state={{ userData }}
                   >Become a doctor</Link>
                 </div>
               </div>
@@ -116,7 +117,7 @@ const AccountPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 
 import { Categories } from '../../../constants.js';
@@ -9,7 +9,10 @@ import { useAuth } from '../../../contexts/AuthContext.js';
 
 const BecomeDoctor = () => {
     const { currentUser } = useAuth();
+    const location = useLocation();
     const navigate = useNavigate();
+
+    const { userData } = location.state;
 
     const [education, setEducation] = useState('');
     const [specialization, setSpecialization] = useState('');
@@ -40,7 +43,11 @@ const BecomeDoctor = () => {
                 describe,
                 educDocuments,
                 hospitalName,
-                hospitalAddres
+                hospitalAddres,
+                userName: userData.fullName,
+                userPhone: userData.phoneNumber,
+                userAddress: userData.address,
+                userPin: userData.pin
             });
             navigate(`/account/${currentUser?.uid}`);
             //show information for successfull sent form!
