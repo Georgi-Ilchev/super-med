@@ -10,23 +10,34 @@ const BecomeDoctorCard = ({
     id
 }) => {
     const navigate = useNavigate();
-    
+
 
     const onDeclineHandler = useCallback(async (e) => {
-        console.log(`clicked ${id}`);
-
         if (id != undefined) {
-            // const requests = collection(db, 'doctor-requests');
-            // const q = query(requests, where("uid", "==", id))
             await deleteDoc(doc(db, "doctor-requests", id));
             console.log('deteled');
-            // navigate(`/admin/requests/becomeadoctor`);
         }
-    }, [id]);
+    }, []);
 
-    const onApproveHandler = () => {
-        console.log(`approved ${id}`);
-    }
+    const onApproveHandler = useCallback(async (e) => {
+        if (id != undefined) {
+            await setDoc(doc(db, "doctors", id), {
+                fullName: data.userName,
+                type: data.specialization,
+                town: data.hospitalTown,
+                description: data.describe,
+                age: data.userAge,
+                phone: data.userPhone,
+                email: data.userEmail,
+                education: data.education,
+                hospitalName: data.hospitalName,
+                hospitalAddres: data.hospitalAddres,
+            });
+            console.log('created');
+
+            onDeclineHandler();
+        }
+    }, []);
 
     return (
         <div className="card" style={{ width: "18rem" }}>

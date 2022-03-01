@@ -20,15 +20,29 @@ const BecomeDoctor = () => {
     const [educDocuments, setEducDocuments] = useState('');
     const [hospitalName, setHospitalName] = useState('');
     const [hospitalAddres, setHospitalAddres] = useState('');
+    const [hospitalTown, setHospitalTown] = useState('');
 
 
     const onBecomeDoctorRequestHandler = async (e) => {
         e.preventDefault();
         //validation
 
+        // const doctors = collection(db, "doctors");
+        // const qu = query(doctors, where('uid', '==', currentUser?.uid));
+        // const dataDoctors = await getDocs(qu);
+
+        // console.log(dataDoctors);
+
+        // if (!dataDoctors.empty) {
+        //     console.log('You are already a doctor!');
+        //     return [];
+        // }
+
         const requests = collection(db, "doctor-requests");
         const q = query(requests, where('uid', '==', currentUser?.uid));
         const dataRequests = await getDocs(q);
+
+        console.log(dataRequests);
 
         if (!dataRequests.empty) {
             console.log('You have already sent a request!');
@@ -44,11 +58,13 @@ const BecomeDoctor = () => {
                 educDocuments,
                 hospitalName,
                 hospitalAddres,
+                hospitalTown,
                 userName: userData.fullName,
                 userPhone: userData.phoneNumber,
                 userAddress: userData.address,
                 userPin: userData.pin,
                 userAge: userData.age,
+                userEmail: userData.email,
             });
             navigate(`/account/${currentUser?.uid}`);
             //show information for successfull sent form!
@@ -129,6 +145,21 @@ const BecomeDoctor = () => {
                                             // name="education"
                                             placeholder="Okrujna"
                                             onChange={(event) => setHospitalName(event.target.value)}
+                                        // defaultValue={userData?.fullName}
+                                        />
+                                        <small className="text-danger form-text">
+                                            {null}
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group mb-3">
+                                        <label>Hospital town</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            // name="education"
+                                            placeholder="Plovdiv"
+                                            onChange={(event) => setHospitalTown(event.target.value)}
                                         // defaultValue={userData?.fullName}
                                         />
                                         <small className="text-danger form-text">

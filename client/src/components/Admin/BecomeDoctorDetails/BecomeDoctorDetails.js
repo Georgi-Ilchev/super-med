@@ -35,7 +35,7 @@ const BecomeDoctorDetails = () => {
                         <p className="card-text"><span className="doctor-details-span">Education:</span> {becomeDoctor?.education}</p>
                         <p className="card-text"><span className="doctor-details-span">Description:</span> {becomeDoctor?.describe}</p>
                         <p className="card-text"><span className="doctor-details-span">Age:</span> {becomeDoctor?.userAge}</p>
-                        <p className="card-text"><span className="doctor-details-span">Email:</span> {becomeDoctor?.email}</p>
+                        <p className="card-text"><span className="doctor-details-span">Email:</span> {becomeDoctor?.userEmail}</p>
                         <p className="card-text"><span className="doctor-details-span">Phone:</span> {becomeDoctor?.userPhone}</p>
                         <p className="card-text"><span className="doctor-details-span">Address:</span> {becomeDoctor?.userAddress}</p>
                         <hr />
