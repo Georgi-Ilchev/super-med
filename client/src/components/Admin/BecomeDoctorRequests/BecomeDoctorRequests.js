@@ -9,26 +9,31 @@ const BecomeDoctorRequests = () => {
     const [flag, setFlag] = useState(true);
 
     useEffect(() => {
+        let isMounted = true;
         (async () => {
             const requests = collection(db, 'doctor-requests');
             const q = query(requests);
             const dbRequests = await getDocs(q);
 
-            setDataRequests(dbRequests.docs.map(x => ({
-                id: x.id,
-                data: x.data()
-            })));
+            if (isMounted) {
+                setDataRequests(dbRequests.docs.map(x => ({
+                    id: x.id,
+                    data: x.data()
+                })));
 
-            setFlag(false);
+                setFlag(false);
+            }
         })();
-    }, []);
+        
+        return () => { isMounted = false };
+    }, [dataRequests]);
 
     return (
         <section>
             {dataRequests.length > 0
                 ? dataRequests.map(x => <BecomeDoctorCard key={x.id} id={x.id} data={x.data}></BecomeDoctorCard>)
                 : flag ? <p style={style.loading}>Loading...</p>
-                       : <p style={style.noDoctorsYet}>No requests yet...</p>}
+                    : <p style={style.noDoctorsYet}>No requests yet...</p>}
 
         </section>
 

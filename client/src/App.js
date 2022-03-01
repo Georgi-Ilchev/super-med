@@ -21,6 +21,7 @@ import DoctorDetails from './components/DoctorDetails/DoctorDetails.js';
 import PrivacyPolicy from './components/Questions/PrivacyPolicy/PrivacyPolicy.js';
 
 import BecomeDoctorRequests from './components/Admin/BecomeDoctorRequests/BecomeDoctorRequests.js';
+import BecomeDoctorDetails from './components/Admin/BecomeDoctorDetails/BecomeDoctorDetails.js';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/appointmentss" element={<Appointmentss />} />
           <Route path="/admin/requests/becomeadoctor" element={<BecomeDoctorRequests />} />
+          <Route path="/admin/requests/becomeadoctor/:id" element={<BecomeDoctorDetails />} />
           <Route path="/policy" element={<PrivacyPolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
