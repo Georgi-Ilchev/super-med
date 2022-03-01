@@ -13,6 +13,8 @@ const EditProfile = () => {
 
   const [pin, setPin] = useState('');
 
+  const [age, setAge] = useState('');
+
   const [email, setEmail] = useState('');
 
   const [address, setAddress] = useState('');
@@ -29,16 +31,17 @@ const EditProfile = () => {
 
 
 
-    await updateDoc(ref, { email, pin, address, fullName, phoneNumber });
+    await updateDoc(ref, { email, age, pin, address, fullName, phoneNumber });
 
     navigate(`/account/${params.uid}`);
-  }, [email, pin, address, fullName, phoneNumber]);
+  }, [email, age, pin, address, fullName, phoneNumber]);
 
   useEffect(() => {
     if (!userData) {
       return;
     }
     setPin(state => userData.pin);
+    setAge(state => userData.age);
     setEmail(state => userData.email);
     setAddress(state => userData.address);
     setFullName(state => userData.fullName);
@@ -78,6 +81,21 @@ const EditProfile = () => {
                       placeholder="Pancho Villa"
                       onChange={(event) => setFullName(event.target.value)}
                       defaultValue={userData?.fullName}
+                    />
+                    <small className="text-danger form-text">
+                      {null}
+                    </small>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Age</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="age"
+                      placeholder="32"
+                      onChange={(event) => setAge(event.target.value)}
+                      defaultValue={userData?.age}
                     />
                     <small className="text-danger form-text">
                       {null}

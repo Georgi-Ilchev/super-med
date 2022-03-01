@@ -47,7 +47,8 @@ const BecomeDoctor = () => {
                 userName: userData.fullName,
                 userPhone: userData.phoneNumber,
                 userAddress: userData.address,
-                userPin: userData.pin
+                userPin: userData.pin,
+                userAge: userData.age,
             });
             navigate(`/account/${currentUser?.uid}`);
             //show information for successfull sent form!

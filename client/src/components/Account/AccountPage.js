@@ -28,8 +28,6 @@ const AccountPage = () => {
     })();
   }, [currentUser]);
 
-
-  // console.log(currentUser);
   return (
     <div className="container mt-5">
       <div className="main-body">
@@ -59,6 +57,15 @@ const AccountPage = () => {
                 </div>
                 <div className="col-sm-9 text-secondary">
                   {userData?.fullName}
+                </div>
+              </div>
+              <hr />
+              <div className="row">
+                <div className="col-sm-3">
+                  <h6 className="mb-0">Age</h6>
+                </div>
+                <div className="col-sm-9 text-secondary">
+                  {userData?.age}
                 </div>
               </div>
               <hr />

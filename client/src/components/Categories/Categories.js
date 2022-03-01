@@ -66,7 +66,6 @@ const Categories = () => {
 
                 {dataDoctors.length > 0
                     ? dataDoctors.map(x =>
-
                         <DoctorCard key={x.id} id={x.id} data={x.data}  >
                             {/* {console.log(x)} */}
                         </DoctorCard>)
