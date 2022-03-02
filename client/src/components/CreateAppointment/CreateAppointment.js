@@ -1,6 +1,8 @@
 import { useAuth } from '../../contexts/AuthContext.js';
 import { db } from '../../utils/firebase.js';
+import ButtonsCard from '../Cards/ButtonsCard/ButtonsCard.js';
 
+import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
@@ -13,11 +15,27 @@ const CreateAppointment = () => {
     // const { currentUser } = useAuth();
     const [doctorData, setDoctorData] = useState(null);
     const [date, setDate] = useState(null);
+    const [day, setDay] = useState(null);
+
+
+    // let currentDate = newDate.getDate();
+    // let currentMonth = newDate.getMonth() + 1;
+    // let currentYear = newDate.getFullYear();
 
     const clickedDate = useCallback((value) => {
-        // alert(`Your selected ${value.format('YYYY-MM-DD')}`)
+        console.log(`date before parsed: ${value}`);
         setDate(prevState => value.format('YYYY-MM-DD'));
+        setDay(prevState => value.format('E'));
+
     }, []);
+
+    let currentDate = new Date();
+    console.log(`currentDate ${currentDate}`);
+    // let choosenDate = new Date(currentDate);
+    // choosenDate.format('YYYY-MM-DD');
+
+    console.log(`date after parsed: ${date}`);
+    // console.log(`new date after format${choosenDate}`);
 
     useEffect(() => {
         (async () => {
@@ -32,16 +50,13 @@ const CreateAppointment = () => {
         })();
     }, [params.doctorId]);
 
-    console.log(date);
 
     return (
         <section className='appointment-section'>
             <div className='appointment-div'></div>
 
             <div style={style.centerCalendar}>
-                {/* <h4>ReactJS Ant-Design Calendar Component</h4> */}
-                <Calendar onChange={clickedDate}
-                />
+                <Calendar disabledDate={disabledDate} onChange={clickedDate} />
             </div>
 
             <div style={style.appointmentInfo}>
@@ -54,53 +69,41 @@ const CreateAppointment = () => {
                         <p className="card-text">Address: {doctorData?.hospitalAddres}</p>
                         <hr />
                         <p className="card-text"><small className="text-muted">Pick a date from calendar</small></p>
-                        {date 
-                        ? <p className="card-text">{date}</p>
-                        : <p>Waiting for your response</p>}
+                        {date
+                            ? <div>
+                                <p className="card-text">{date}</p>
+                                <p>{day}</p>
+
+                                <ButtonsCard day={day}></ButtonsCard>
+                            </div>
+                            : <p>Waiting for your response</p>}
                     </div>
                 </div>
             </div>
-
         </section>
-
-        // <div className='row'>
-        //     <div className='appointment-div'>
-
-        //         <div className='col' style={style.centerCalendar}>
-        //             <h4>ReactJS Ant-Design Calendar Component</h4>
-        //             <Calendar onChange={clickedDate} />
-        //         </div>
-
-        //         <div className='col'>
-        //             <div class="card mb-3">
-        //                 <img src="..." class="card-img-top" alt="..." />
-        //                 <div class="card-body">
-        //                     <h5 class="card-title">Card title</h5>
-        //                     <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        //                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        //                 </div>
-        //             </div>
-        //         </div>
-
-        //     </div>
-        // </div>
     )
 }
 
 export default CreateAppointment;
 
+function disabledDate(current) {
+    // Can not select days before today and sundays
+    return current && current < moment().startOf('day') ||
+        moment(current).day() === 0
+}
+
 const style = {
     centerCalendar: {
-        // display: 'block',
         width: '80%',
         padding: 40,
         zIndex: 1
+        // display: 'block',
         // gridColumn: 1,
         // gridRow: 1,
-
         // margin: "auto"
     },
     appointmentInfo: {
+        position: 'inherit',
         gridColumn: 2,
         gridRow: 1,
         padding: 40,
