@@ -2,7 +2,7 @@
 const DoctorsInfo = () => {
     return (
         <section>
-            <table class="table">
+            <table className="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>

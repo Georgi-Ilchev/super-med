@@ -1,12 +1,19 @@
-.appointment-section {
+.appointment-div {
     position: fixed;
     width: 100%;
     height: 100%;
+    top: 0;
     background-size: cover;
     background-image: 
-        /* linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), */
+        linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
         url('../../assets/images/appointment-calendar.png');
-    top: 0;
-    opacity: 0.2;
-    /* overflow-y: scroll; */
+
+    /* z-index: -1; */
+    /* opacity: 0.2; */
+}
+
+.appointment-section {
+    overflow-y: scroll;
+    position: relative;
+    display: grid;
 }
