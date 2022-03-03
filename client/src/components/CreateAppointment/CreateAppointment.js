@@ -17,25 +17,27 @@ const CreateAppointment = () => {
     const [date, setDate] = useState(null);
     const [day, setDay] = useState(null);
 
-
-    // let currentDate = newDate.getDate();
-    // let currentMonth = newDate.getMonth() + 1;
-    // let currentYear = newDate.getFullYear();
-
     const clickedDate = useCallback((value) => {
-        console.log(`date before parsed: ${value}`);
+        const rawDate = value;
         setDate(prevState => value.format('YYYY-MM-DD'));
         setDay(prevState => value.format('E'));
 
+        let selectedDate = new Date(rawDate);
+        let currentDate = new Date();
+
+        // OPTIMIZE
+        let compare = selectedDate.toLocaleDateString().localeCompare(currentDate.toLocaleDateString());
+
+        if (selectedDate.getTime() < currentDate.getTime()) {
+            if (compare == 0) {
+                return;
+            }
+            setDate(prevState => null);
+            setDay(prevState => null);
+            console.log('greshna data');
+            return;
+        }
     }, []);
-
-    let currentDate = new Date();
-    console.log(`currentDate ${currentDate}`);
-    // let choosenDate = new Date(currentDate);
-    // choosenDate.format('YYYY-MM-DD');
-
-    console.log(`date after parsed: ${date}`);
-    // console.log(`new date after format${choosenDate}`);
 
     useEffect(() => {
         (async () => {
@@ -91,6 +93,8 @@ function disabledDate(current) {
     return current && current < moment().startOf('day') ||
         moment(current).day() === 0
 }
+
+
 
 const style = {
     centerCalendar: {
