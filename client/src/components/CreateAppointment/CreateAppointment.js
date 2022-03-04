@@ -4,15 +4,16 @@ import ButtonsCard from '../Cards/ButtonsCard/ButtonsCard.js';
 
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { useParams, useNavigate } from 'react-router-dom';
+import { collection, doc, getDocs, getDoc, query, setDoc, addDoc, where } from 'firebase/firestore';
 import { Calendar } from 'antd';
 import "antd/dist/antd.css";
 import './CreateAppointment.css';
 
 const CreateAppointment = () => {
     let params = useParams();
-    // const { currentUser } = useAuth();
+    const navigate = useNavigate();
+    const { currentUser } = useAuth();
     const [doctorData, setDoctorData] = useState(null);
     const [date, setDate] = useState(null);
     const [day, setDay] = useState(null);
@@ -42,16 +43,24 @@ const CreateAppointment = () => {
         }
     }, []);
 
-    function clickedHour(el) {
-        setHour(prevState => el.target.value);
-        // el.target.style.backgroundStyle = 'red';
-    };
-
     const reserveAppointment = async (e) => {
-        if (!date || !hour) {
+        if (!date || !hour || !currentUser) {
             return;
         }
-        console.log('reserve appointment');
+
+        const generatedId = autoId();
+
+        await setDoc(doc(db, `appointments/${params.doctorId}`, 'currentDoctorApp', generatedId), {
+            doctorId: params.doctorId,
+            userId: currentUser.uid,
+            date: date,
+            hour: hour,
+            status: 'active',
+            address: doctorData.hospitalAddres,
+            hospital: doctorData.hospitalName
+        });
+
+        navigate(`/appointments/`);
     };
 
     useEffect(() => {
@@ -67,6 +76,23 @@ const CreateAppointment = () => {
         })();
     }, [params.doctorId]);
 
+    function clickedHour(el) {
+        setHour(prevState => el.target.value);
+        // el.target.style.backgroundStyle = 'red';
+    };
+
+    function autoId() {
+        const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        let autoId = '';
+
+        for (let i = 0; i < 20; i++) {
+            autoId += CHARS.charAt(
+                Math.floor(Math.random() * CHARS.length)
+            )
+        }
+        return autoId;
+    }
 
     return (
         <section className='appointment-section'>
@@ -89,19 +115,24 @@ const CreateAppointment = () => {
                         {date
                             ? <div>
                                 {/* <p className="card-text text-center">{date}{hour ? ` - ${hour}` : null}</p> */}
-                                <h2 className='text-center'><span className="badge rounded-pill bg-light text-dark">
-                                    {date}{hour ? ` - ${hour}` : null}
-                                </span></h2>
-                                <ButtonsCard style={style.buttonsStyle} day={day} clickedHour={clickedHour} ></ButtonsCard>
+                                <h2 className='text-center'>
+                                    <span className="badge rounded-pill bg-light text-dark">
+                                        {date}{hour ? ` - ${hour}` : null}
+                                    </span>
+                                </h2>
+                                <ButtonsCard
+                                    style={style.buttonsStyle}
+                                    day={day}
+                                    clickedHour={clickedHour}
+                                    doctorId={params.doctorId}
+                                    date={date} >
+                                </ButtonsCard>
                                 {date && hour
                                     ? <div><hr /> <button type="button" className="btn btn-dark" onClick={reserveAppointment}>Reserve</button></div>
                                     : null
                                 }
-
                             </div>
                             : <p>Waiting for your response</p>}
-
-
                     </div>
                 </div>
             </div>

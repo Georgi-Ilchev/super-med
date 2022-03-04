@@ -1,13 +1,31 @@
 import { useEffect, useState, useCallback } from "react";
 import { WeeklyOurs } from "../../../constants.js";
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { db } from "../../../utils/firebase.js";
 
 const ButtonsCard = ({
     day,
-    clickedHour
+    clickedHour,
+    date,
+    doctorId
 }) => {
     const [hours, setHours] = useState(null);
+    // const takenHours = [];
+    // const [takenHours, setTakenHours] = useState([]);
 
     useEffect(() => {
+        (async () => {
+            // setTakenHours([]);
+            const doctorAppointments = collection(db, `appointments/${doctorId}/currentDoctorApp`);
+            const q = query(doctorAppointments, where("date", "==", date));
+            const dataAppointment = await getDocs(q);
+            // dataAppointment.docs.map(x => console.log(x.data().hour));
+            // dataAppointment.docs.map(x => setTakenHours(x.data().hour));
+            // dataAppointment.docs.map(x => takenHours.push((x.data().hour)));
+        })();
+
+        // console.log(takenHours);
+
         switch (day) {
             case '1':
                 setHours(prevState => WeeklyOurs.mond); break;
@@ -22,7 +40,7 @@ const ButtonsCard = ({
 
             default: setHours(prevState => null); break;
         }
-    }, [day]);
+    }, [date]);
 
     return (
         <div>
@@ -38,6 +56,7 @@ const ButtonsCard = ({
                         type="button"
                         onClick={clickedHour}
                         value={info}
+                        // disabled
                         className="btn btn-outline-secondary">
                         {info}
                     </button>)
