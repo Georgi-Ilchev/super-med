@@ -10,21 +10,15 @@ const ButtonsCard = ({
     doctorId
 }) => {
     const [hours, setHours] = useState(null);
-    // const takenHours = [];
-    // const [takenHours, setTakenHours] = useState([]);
+    const [takenHours, setTakenHours] = useState([]);
 
     useEffect(() => {
         (async () => {
-            // setTakenHours([]);
             const doctorAppointments = collection(db, `appointments/${doctorId}/currentDoctorApp`);
             const q = query(doctorAppointments, where("date", "==", date));
             const dataAppointment = await getDocs(q);
-            // dataAppointment.docs.map(x => console.log(x.data().hour));
-            // dataAppointment.docs.map(x => setTakenHours(x.data().hour));
-            // dataAppointment.docs.map(x => takenHours.push((x.data().hour)));
+            setTakenHours((state) => dataAppointment.docs.map((appointment) => appointment.data().hour));
         })();
-
-        // console.log(takenHours);
 
         switch (day) {
             case '1':
@@ -40,7 +34,11 @@ const ButtonsCard = ({
 
             default: setHours(prevState => null); break;
         }
+
     }, [date]);
+
+    useEffect(() => {
+    }, [takenHours])
 
     return (
         <div>
@@ -50,16 +48,30 @@ const ButtonsCard = ({
                     // <p key={x}>{info}</p>)
                     // <p key={x} style={style.buttons} >{info}</p>)
                     // <p style={style.buttons} key={x}>{info}</p>)
-                    <button
-                        key={x}
-                        style={style.buttons}
-                        type="button"
-                        onClick={clickedHour}
-                        value={info}
-                        // disabled
-                        className="btn btn-outline-secondary">
-                        {info}
-                    </button>)
+                    // console.log(takenHours);
+                    takenHours.find((hour) => hour.includes(info))
+                        ? <button
+                            key={x}
+                            style={style.disabledButtons}
+                            type="button"
+                            onClick={clickedHour}
+                            value={info}
+                            disabled
+                            className="btn btn-outline-secondary">
+                            {info}
+                        </button>
+                        : <button
+                            key={x}
+                            style={style.buttons}
+                            type="button"
+                            onClick={clickedHour}
+                            value={info}
+                            className="btn btn-outline-secondary">
+                            {info}
+                        </button>
+
+
+                )
                 : <p>nyama chasove</p>}
         </div>
     )
@@ -84,5 +96,17 @@ const style = {
         cursor: 'pointer',
 
         // display: 'grid',
+    },
+    disabledButtons: {
+        opacity: 0.65,
+        color: 'gray',
+        fontSize: '1.2em',
+        fontWeight: 500,
+        height: '36px',
+        margin: '5px',
+        textAlign: 'center',
+        border: '2px solid',
+        display: 'inline-block',
+        background: 'repeating-linear-gradient(-45deg,transparent,transparent 5px,#f7fafc 0,#f7fafc 10px)',
     }
 }
