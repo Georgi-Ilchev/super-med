@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 import { Categories } from '../../../constants.js';
-import { db } from '../../../utils/firebase.js';
+import { db, storage } from '../../../utils/firebase.js';
 import { useAuth } from '../../../contexts/AuthContext.js';
 
 
@@ -17,14 +18,39 @@ const BecomeDoctor = () => {
     const [education, setEducation] = useState('');
     const [specialization, setSpecialization] = useState('');
     const [describe, setDescribe] = useState('');
-    const [educDocuments, setEducDocuments] = useState('');
+    const [educDocuments, setEducDocuments] = useState(null);
     const [hospitalName, setHospitalName] = useState('');
     const [hospitalAddres, setHospitalAddres] = useState('');
     const [hospitalTown, setHospitalTown] = useState('');
 
+    const [progress, setProgress] = useState(0);
+
+    const uploadFile = (file) => {
+        console.log(file);
+        if (!file) {
+            return;
+        }
+
+        const storageRef = ref(storage, `/documents/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on('state_changed', (snapshot) => {
+            const prog = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            setProgress(prog);
+        },
+            (err) => console.log(err),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref)
+                    .then((url) => console.log(url));
+            }
+        );
+
+    }
+
 
     const onBecomeDoctorRequestHandler = async (e) => {
         e.preventDefault();
+
         //validation
 
         // const doctors = collection(db, "doctors");
@@ -42,12 +68,14 @@ const BecomeDoctor = () => {
         const q = query(requests, where('uid', '==', currentUser?.uid));
         const dataRequests = await getDocs(q);
 
-        console.log(dataRequests);
+        // console.log(dataRequests);
 
         if (!dataRequests.empty) {
             console.log('You have already sent a request!');
             return [];
         }
+
+        uploadFile(educDocuments[0])
 
         try {
             await setDoc(doc(db, "doctor-requests", currentUser?.uid), {
@@ -55,7 +83,7 @@ const BecomeDoctor = () => {
                 education,
                 specialization,
                 describe,
-                educDocuments,
+                // educDocuments,
                 hospitalName,
                 hospitalAddres,
                 hospitalTown,
@@ -134,8 +162,10 @@ const BecomeDoctor = () => {
                                             className="form-control"
                                             type="file"
                                             id="formFile"
-                                            onChange={(event) => setEducDocuments(event.target.value)} />
+                                            onChange={(event) => setEducDocuments(event.target.files)} />
                                     </div>
+
+                                    <h3>{`Uploaded ${progress}`}</h3>
 
                                     <div className="form-group mb-3">
                                         <label>Hospital name</label>
