@@ -5,181 +5,161 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 
 const EditProfile = () => {
-  let params = useParams();
+    let params = useParams();
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState(null);
 
-  const [pin, setPin] = useState('');
+    const [pin, setPin] = useState('');
 
-  const [age, setAge] = useState('');
+    const [age, setAge] = useState('');
 
-  const [email, setEmail] = useState('');
+    const [address, setAddress] = useState('');
 
-  const [address, setAddress] = useState('');
+    const [fullName, setFullName] = useState('');
 
-  const [fullName, setFullName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
 
-  const [phoneNumber, setPhoneNumber] = useState('');
+    const onEditHandler = useCallback(async (e) => {
+        e.preventDefault();
 
-  const onEditHandler = useCallback(async (e) => {
-    e.preventDefault();
-
-    const ref = doc(db, 'users', params?.uid);
+        const ref = doc(db, 'users', params?.uid);
 
 
 
 
-    await updateDoc(ref, { email, age, pin, address, fullName, phoneNumber });
+        await updateDoc(ref, {  age, pin, address, fullName, phoneNumber });
 
-    navigate(`/account/${params.uid}`);
-  }, [email, age, pin, address, fullName, phoneNumber]);
-
-  useEffect(() => {
-    if (!userData) {
-      return;
-    }
-    setPin(state => userData.pin);
-    setAge(state => userData.age);
-    setEmail(state => userData.email);
-    setAddress(state => userData.address);
-    setFullName(state => userData.fullName);
-    setPhoneNumber(state => userData.phoneNumber);
-  }, [userData]);
-
-  useEffect(() => {
-    (async () => {
-      if (!params?.uid) {
-        return;
-      }
-
-      const ref = await doc(db, 'users', params.uid);
-
-      const user = await getDoc(ref);
-
-      setUserData(prevState => user.data());
-    })();
-  }, [params?.uid]);
+        navigate(`/account/${params.uid}`);
+    }, [ age, pin, address, fullName, phoneNumber]);
 
 
-  return (
-    <div>
-      <section className="register-section">
-        <div className="App">
-          <div className="container">
-            <div className="row d-flex justify-content-center">
-              <div className="col-md-4">
-                <form id="loginform" onSubmit={onEditHandler}>
+    useEffect(() => {
+        if (!userData) {
+            return;
+        }
+        setPin(state => userData.pin);
+        setAge(state => userData.age);
+        setAddress(state => userData.address);
+        setFullName(state => userData.fullName);
+        setPhoneNumber(state => userData.phoneNumber);
+    }, [userData]);
 
-                  <div className="form-group">
-                    <label>Full Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="fullName"
-                      placeholder="Pancho Villa"
-                      onChange={(event) => setFullName(event.target.value)}
-                      defaultValue={userData?.fullName}
-                    />
-                    <small className="text-danger form-text">
-                      {null}
-                    </small>
-                  </div>
+    useEffect(() => {
+        (async () => {
+            if (!params?.uid) {
+                return;
+            }
 
-                  <div className="form-group">
-                    <label>Age</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      name="age"
-                      placeholder="32"
-                      onChange={(event) => setAge(event.target.value)}
-                      defaultValue={userData?.age}
-                    />
-                    <small className="text-danger form-text">
-                      {null}
-                    </small>
-                  </div>
+            const ref = await doc(db, 'users', params.uid);
 
-                  <div className="form-group">
-                    <label>Email address</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="EmailInput"
-                      name="email"
-                      aria-describedby="emailHelp"
-                      placeholder="yourmail@mail.com"
-                      onChange={(event) => setEmail(event.target.value)}
-                      defaultValue={userData?.email}
+            const user = await getDoc(ref);
 
-                    />
-                    <small className="text-danger form-text">
-                      {null}
-                    </small>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Phone number</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="phoneNumber"
-                      placeholder="+359 *********"
-                      onChange={(event) => setPhoneNumber(event.target.value)}
-                      defaultValue={userData?.phoneNumber}
-
-                    />
-                    <small className="text-danger form-text">
-                      {null}
-                    </small>
-                  </div>
-
-                  <div className="form-group">
-                    <label>PIN(Personal Identification Number)</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="PIN"
-                      placeholder="0000000000"
-                      onChange={(event) => setPin(event.target.value)}
-                      defaultValue={userData?.pin}
-
-                    />
-                    <small className="text-danger form-text">
-                      {null}
-                    </small>
-                  </div>
-
-                  <div className="form-group">
-                    <label>Address</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="PIN"
-                      placeholder="City, Street 00"
-                      onChange={(event) => setAddress(event.target.value)}
-                      defaultValue={userData?.address}
-
-                    />
-                    <small className="text-danger form-text">
-                      {null}
-                    </small>
-                  </div>
+            setUserData(prevState => user.data());
+        })();
+    }, [params?.uid]);
 
 
-                  <button type="submit" className="btn mt-5 btn-primary">
-                    Edit
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
+    return (
+        <div>
+            <section className="register-section">
+                <div className="App">
+                    <div className="container">
+                        <div className="row d-flex justify-content-center">
+                            <div className="col-md-4">
+                                <form id="loginform" onSubmit={onEditHandler}>
+
+                                    <div className="form-group">
+                                        <label>Full Name</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="fullName"
+                                            placeholder="Pancho Villa"
+                                            onChange={(event) => setFullName(event.target.value)}
+                                            defaultValue={userData?.fullName}
+                                        />
+                                        <small className="text-danger form-text">
+                                            {null}
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Age</label>
+                                        <input
+                                            type="number"
+                                            className="form-control"
+                                            name="age"
+                                            placeholder="32"
+                                            onChange={(event) => setAge(event.target.value)}
+                                            defaultValue={userData?.age}
+                                        />
+                                        <small className="text-danger form-text">
+                                            {null}
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Phone number</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="phoneNumber"
+                                            placeholder="+359 *********"
+                                            onChange={(event) => setPhoneNumber(event.target.value)}
+                                            defaultValue={userData?.phoneNumber}
+
+                                        />
+                                        <small className="text-danger form-text">
+                                            {null}
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>PIN(Personal Identification Number)</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="PIN"
+                                            placeholder="0000000000"
+                                            onChange={(event) => setPin(event.target.value)}
+                                            defaultValue={userData?.pin}
+
+                                        />
+                                        <small className="text-danger form-text">
+                                            {null}
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Address</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="PIN"
+                                            placeholder="City, Street 00"
+                                            onChange={(event) => setAddress(event.target.value)}
+                                            defaultValue={userData?.address}
+
+                                        />
+                                        <small className="text-danger form-text">
+                                            {null}
+                                        </small>
+                                    </div>
+
+
+                                    <button type="submit" className="btn mt-5 btn-primary">
+                                        Edit
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-    </div>
-  );
+    );
 };
 
 export default EditProfile;
