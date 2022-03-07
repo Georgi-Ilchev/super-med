@@ -5,7 +5,7 @@ import ButtonsCard from '../Cards/ButtonsCard/ButtonsCard.js';
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { collection, doc, getDocs, getDoc, query, setDoc, addDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, getDoc, query, setDoc, addDoc, where, updateDoc, arrayUnion } from 'firebase/firestore';
 import { Calendar } from 'antd';
 import "antd/dist/antd.css";
 import './CreateAppointment.css';
@@ -50,17 +50,29 @@ const CreateAppointment = () => {
 
         const generatedId = autoId();
 
-        await setDoc(doc(db, `appointments/${params.doctorId}`, 'currentDoctorApp', generatedId), {
-            doctorId: params.doctorId,
-            userId: currentUser.uid,
-            date: date,
-            hour: hour,
-            status: 'active',
-            address: doctorData.hospitalAddres,
-            hospital: doctorData.hospitalName
-        });
+        try {
+            await setDoc(doc(db, `appointments/${params.doctorId}`, 'currentDoctorApp', generatedId), {
+                doctorId: params.doctorId,
+                userId: currentUser.uid,
+                date: date,
+                hour: hour,
+                status: 'active',
+                address: doctorData.hospitalAddres,
+                hospital: doctorData.hospitalName
+            });
 
-        navigate(`/appointments/`);
+            await updateDoc(doc(db, 'users', currentUser.uid), {
+                appointments: arrayUnion({
+                    appointmentId: generatedId,
+                    doctorId: params.doctorId,
+                })
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+
+        navigate(`/appointments`);
     };
 
     useEffect(() => {
