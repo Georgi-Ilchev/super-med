@@ -19,12 +19,12 @@ const Login = () => {
         return formIsValid;
     };
 
-    const onLoginSubmit = useCallback(async (e) => {
+    const onLoginSubmit = async (e) => {
         e.preventDefault();
         handleValidation();
 
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+        console.log(password);
+        console.log(email);
 
         try {
             await signInWithEmailAndPassword(auth, email, password);
@@ -34,7 +34,7 @@ const Login = () => {
             const errorCode = error.code;
             const errorMessage = error.message;
         }
-    }, []);
+    };
 
     return (
         <section className="login-section">
@@ -55,7 +55,7 @@ const Login = () => {
                                         name="email"
                                         aria-describedby="emailHelp"
                                         placeholder="Enter email"
-                                        onChange={(event) => setEmail(event.target.value)}
+                                        onChange={(event) => setEmail(event.target.value.trim())}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -66,7 +66,7 @@ const Login = () => {
                                         id="exampleInputPassword1"
                                         name="password"
                                         placeholder="Password"
-                                        onChange={(event) => setPassword(event.target.value)}
+                                        onChange={(event) => setPassword(event.target.value.trim())}
                                     />
                                     {/* <small id="passworderror" className="text-danger form-text">
                                         {passwordError}

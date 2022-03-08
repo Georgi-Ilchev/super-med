@@ -59,9 +59,6 @@ const Register = () => {
 		e.preventDefault();
 		handleValidation();
 
-		const email = e.target.email.value;
-		const password = e.target.password.value;
-
 		const users = collection(db, 'users');
 		const q = query(users, where('email', '==', email));
 		const dataUsers = await getDocs(q);
@@ -113,7 +110,7 @@ const Register = () => {
 										name="email"
 										aria-describedby="emailHelp"
 										placeholder="Enter email"
-										onChange={(event) => setEmail(event.target.value)}
+										onChange={(event) => setEmail(event.target.value.trim())}
 									/>
 									<small id="emailHelp" className="text-danger form-text">
 										{emailError}
@@ -127,7 +124,7 @@ const Register = () => {
 										id="exampleInputPassword1"
 										name="password"
 										placeholder="Password"
-										onChange={(event) => setPassword(event.target.value)}
+										onChange={(event) => setPassword(event.target.value.trim())}
 									/>
 									<small id="passworderror" className="text-danger form-text">
 										{passwordError}
@@ -141,7 +138,7 @@ const Register = () => {
 										id="exampleInputPassword1"
 										name="re-password"
 										placeholder="Password"
-										onChange={(event) => setRePass(event.target.value)}
+										onChange={(event) => setRePass(event.target.value.trim())}
 									/>
 									<small id="passworderror" className="text-danger form-text">
 										{rePassError}
