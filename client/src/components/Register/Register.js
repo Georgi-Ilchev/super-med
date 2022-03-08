@@ -40,10 +40,10 @@ const Register = () => {
 			setEmailError('Email Not Valid');
 		}
 
-		if (!password.match(/^[a-zA-Z]{8,22}$/)) {
+		if (!password.match(/^[a-zA-Z0-9]{8,22}$/)) {
 			formIsValid = false;
 
-			setPasswordError('Only Letters and length must best min 8 Characters and Max 22 Characters');
+			setPasswordError('Password must be only letters and digits between 8 and 22 characters');
 		}
 
 		if (password !== rePass) {
@@ -59,6 +59,10 @@ const Register = () => {
 		e.preventDefault();
 		handleValidation();
 
+		if (!formIsValid) {
+			return;
+		}
+
 		const users = collection(db, 'users');
 		const q = query(users, where('email', '==', email));
 		const dataUsers = await getDocs(q);
@@ -67,13 +71,6 @@ const Register = () => {
 			setEmailError('Email already exist!');
 			return [];
 		}
-
-		if (!formIsValid) {
-			return;
-		}
-
-		debugger;
-
 
 		dataUsers.docs.map(u => setExistingUser(u));
 

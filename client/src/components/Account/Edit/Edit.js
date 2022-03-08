@@ -6,33 +6,68 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const EditProfile = () => {
     let params = useParams();
+    let formIsValid = true;
 
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState(null);
 
     const [pin, setPin] = useState('');
-
     const [age, setAge] = useState('');
-
     const [address, setAddress] = useState('');
-
     const [fullName, setFullName] = useState('');
-
     const [phoneNumber, setPhoneNumber] = useState('');
+
+    const [ageError, setAgeError] = useState('');
+    const [addressError, setAddressError] = useState('');
+    const [fullNameError, setFullNameError] = useState('');
+    const [phoneNumberError, setPhoneNumberError] = useState('');
+
+    const handleValidation = () => {
+        setFullNameError('');
+        setAgeError('');
+        setPhoneNumberError('');
+        setAddressError('');
+        formIsValid = true;
+
+        if (!fullName.match(/^([a-zA-Z]){2,25} ([a-zA-Z]){2,25}$/)) {
+            setFullNameError('Name must contains only letters between 2 and 25');
+            formIsValid = false;
+        }
+
+        if (age < 18 || age >= 100) {
+            setAgeError('Age must be between 18 and 100');
+            formIsValid = false;
+        }
+
+        if (!phoneNumber.match(/^[0-9]{10}$/)) {
+            setPhoneNumberError('Phone number must contains exactly 10 numbers');
+            formIsValid = false;
+        }
+
+        if (address.length <= 5) {
+            setAddressError('Address must be not empty');
+            formIsValid = false;
+        }
+    }
 
     const onEditHandler = useCallback(async (e) => {
         e.preventDefault();
+        handleValidation();
+
+        if (!formIsValid) {
+            return;
+        }
 
         const ref = doc(db, 'users', params?.uid);
 
 
 
 
-        await updateDoc(ref, {  age, pin, address, fullName, phoneNumber });
+        await updateDoc(ref, { age, pin, address, fullName, phoneNumber });
 
         navigate(`/account/${params.uid}`);
-    }, [ age, pin, address, fullName, phoneNumber]);
+    }, [age, pin, address, fullName, phoneNumber]);
 
 
     useEffect(() => {
@@ -77,11 +112,11 @@ const EditProfile = () => {
                                             className="form-control"
                                             name="fullName"
                                             placeholder="Pancho Villa"
-                                            onChange={(event) => setFullName(event.target.value)}
+                                            onChange={(event) => setFullName(event.target.value.trim())}
                                             defaultValue={userData?.fullName}
                                         />
                                         <small className="text-danger form-text">
-                                            {null}
+                                            {fullNameError}
                                         </small>
                                     </div>
 
@@ -96,7 +131,7 @@ const EditProfile = () => {
                                             defaultValue={userData?.age}
                                         />
                                         <small className="text-danger form-text">
-                                            {null}
+                                            {ageError}
                                         </small>
                                     </div>
 
@@ -106,13 +141,13 @@ const EditProfile = () => {
                                             type="text"
                                             className="form-control"
                                             name="phoneNumber"
-                                            placeholder="+359 *********"
-                                            onChange={(event) => setPhoneNumber(event.target.value)}
+                                            placeholder="08********"
+                                            onChange={(event) => setPhoneNumber(event.target.value.trim())}
                                             defaultValue={userData?.phoneNumber}
 
                                         />
                                         <small className="text-danger form-text">
-                                            {null}
+                                            {phoneNumberError}
                                         </small>
                                     </div>
 
@@ -139,12 +174,12 @@ const EditProfile = () => {
                                             className="form-control"
                                             name="PIN"
                                             placeholder="City, Street 00"
-                                            onChange={(event) => setAddress(event.target.value)}
+                                            onChange={(event) => setAddress(event.target.value.trim())}
                                             defaultValue={userData?.address}
 
                                         />
                                         <small className="text-danger form-text">
-                                            {null}
+                                            {addressError}
                                         </small>
                                     </div>
 
