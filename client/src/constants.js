@@ -102,7 +102,17 @@ const WeeklyOurs = {
     }
 }
 
+const Towns = [
+    'Sofia',
+    'Plovdiv',
+    'Veliko Tarnovo',
+    'Burgas',
+    'Varna',
+    'Stara Zagora',
+]
+
 export {
     Categories,
-    WeeklyOurs
+    WeeklyOurs,
+    Towns,
 }

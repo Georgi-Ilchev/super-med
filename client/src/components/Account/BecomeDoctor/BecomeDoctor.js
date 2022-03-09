@@ -4,7 +4,7 @@ import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firesto
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import AccountModal from '../../Modal/AccountModal/AccountModal.js';
 
-import { Categories } from '../../../constants.js';
+import { Categories, Towns } from '../../../constants.js';
 import { db, storage } from '../../../utils/firebase.js';
 import { useAuth } from '../../../contexts/AuthContext.js';
 import { Alert, Modal } from 'react-bootstrap';
@@ -47,7 +47,10 @@ const BecomeDoctor = () => {
         setDescribeError('');
         setHospitalNameError('');
         setHospitalAddresError('');
+        setHospitalTownError('');
         setEducDocumentsError('');
+
+        // Todo: resolve error with select/options
 
         formIsValid = true;
 
@@ -58,7 +61,7 @@ const BecomeDoctor = () => {
 
         if (Categories.find((category) => specialization === category)) {
         } else {
-            setSpecializationError('Wrong specialization!');
+            setSpecializationError('Specialization does not exist!');
             formIsValid = false;
         }
 
@@ -79,6 +82,12 @@ const BecomeDoctor = () => {
 
         if (educDocuments === null) {
             setEducDocumentsError('Required 1 document image at least!');
+            formIsValid = false;
+        }
+
+        if (Towns.find((town) => hospitalTown === town)) {
+        } else {
+            setHospitalTownError('Town doesn not exist!');
             formIsValid = false;
         }
     }
@@ -208,9 +217,9 @@ const BecomeDoctor = () => {
                                         <select
                                             className="form-select"
                                             id="inputGroupSelect01"
-                                            defaultValue='Choose'
+                                            defaultValue={'default'}
                                             onChange={(event) => setSpecialization(event.target.value.trim())}>
-                                            <option selected hidden>Choose...</option>
+                                            <option value='default' selected hidden>Choose...</option>
                                             {Categories.map(x =>
                                                 <option key={x} value={x}>{x}</option>
                                             )}
@@ -267,14 +276,16 @@ const BecomeDoctor = () => {
 
                                     <div className="form-group mb-3">
                                         <label>Hospital town</label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            // name="education"
-                                            placeholder="Plovdiv"
-                                            onChange={(event) => setHospitalTown(event.target.value.trim())}
-                                        // defaultValue={userData?.fullName}
-                                        />
+                                        <select
+                                            className="form-select"
+                                            id="inputGroupSelect01"
+                                            defaultValue={'default'}
+                                            onChange={(event) => setHospitalTown(event.target.value.trim())}>
+                                            <option value='default' selected hidden>Choose...</option>
+                                            {Towns.map(x =>
+                                                <option key={x} value={x}>{x}</option>
+                                            )}
+                                        </select>
                                         <small className="text-danger form-text">
                                             {hospitalTownError}
                                         </small>

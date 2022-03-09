@@ -186,3 +186,27 @@ const style = {
         paddingTop: '10rem'
     }
 }
+
+
+// try {
+//     const docRef = await addDoc(collection(db, 'appointments'), {
+//         doctorId: params.doctorId,
+//         userId: currentUser.uid,
+//         date: date,
+//         hour: hour,
+//         status: 'active',
+//         address: doctorData.hospitalAddres,
+//         hospital: doctorData.hospitalName
+//     });
+
+//     console.log(docRef);
+
+//     await updateDoc(doc(db, 'users', currentUser.uid), {
+//         appointments: arrayUnion({
+//             appointmentId: docRef.id,
+//             doctorId: params.doctorId,
+//         })
+//     });
+// } catch (error) {
+//     console.log(error);
+// }
