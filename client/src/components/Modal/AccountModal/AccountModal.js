@@ -1,6 +1,6 @@
 import { Alert, Modal } from 'react-bootstrap';
 
-const AccountModal = ({ show, alertInfo }) => {
+const AccountModal = ({ show, modalInfo }) => {
     return (
         <Modal
             show={show}
@@ -13,7 +13,7 @@ const AccountModal = ({ show, alertInfo }) => {
                 <Modal.Title id="contained-modal-title-vcenter">Congratulations!</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h4 centered>{alertInfo}</h4>
+                <h4>{modalInfo}</h4>
             </Modal.Body>
             <Modal.Footer>
             </Modal.Footer>

@@ -1,6 +1,8 @@
+import { db } from '../../../utils/firebase';
+import AccountModal from '../../Modal/AccountModal/AccountModal.js';
+
 import React, { useState, useCallback, useEffect } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../../../utils/firebase';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
@@ -22,6 +24,9 @@ const EditProfile = () => {
     const [addressError, setAddressError] = useState('');
     const [fullNameError, setFullNameError] = useState('');
     const [phoneNumberError, setPhoneNumberError] = useState('');
+
+    const [modalInfo, setModalInfo] = useState('');
+    const [modalShow, setModalShow] = useState(false);
 
     const handleValidation = () => {
         setFullNameError('');
@@ -63,10 +68,17 @@ const EditProfile = () => {
 
 
 
+        try {
+            await updateDoc(ref, { age, pin, address, fullName, phoneNumber });
+        } catch (error) {
+            console.log(error);
+            return;
+        }
 
-        await updateDoc(ref, { age, pin, address, fullName, phoneNumber });
+        setModalInfo('You have successfully edit your account!');
+        setModalShow(true);
+        setTimeout(() => navigate(`/account/${params.uid}`), 1500);
 
-        navigate(`/account/${params.uid}`);
     }, [age, pin, address, fullName, phoneNumber]);
 
 
@@ -98,6 +110,14 @@ const EditProfile = () => {
 
     return (
         <div>
+            {modalInfo === ''
+                ? null
+                : <AccountModal
+                    show={modalShow}
+                    modalInfo={modalInfo}
+                    onHide={() => setModalShow(false)}
+                />
+            }
             <section className="register-section">
                 <div className="App">
                     <div className="container">

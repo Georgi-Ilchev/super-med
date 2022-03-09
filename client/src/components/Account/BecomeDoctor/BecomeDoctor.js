@@ -28,8 +28,7 @@ const BecomeDoctor = () => {
     const [progress, setProgress] = useState(0);
     const [url, setUrl] = useState(null);
 
-    const [visibleAlert, setVisibleAlert] = useState(false);
-    const [alertInfo, setAlertInfo] = useState('');
+    const [modalInfo, setModalInfo] = useState('');
     const [modalShow, setModalShow] = useState(false);
 
     const [existingRequestError, setExistingRequestError] = useState('');
@@ -114,20 +113,20 @@ const BecomeDoctor = () => {
             return;
         }
 
-        setAlertInfo('You have successfully send a request to be a doctor!');
+        setModalInfo('You have successfully send a request to be a doctor!');
         setModalShow(true);
-        setTimeout(() => navigate(`/account/${currentUser?.uid}`), 3000);
+        setTimeout(() => navigate(`/account/${currentUser?.uid}`), 2200);
     }
 
     // console.log(url);
 
     return (
         <div>
-            {alertInfo === ''
+            {modalInfo === ''
                 ? null
                 : <AccountModal
                     show={modalShow}
-                    alertInfo={alertInfo}
+                    modalInfo={modalInfo}
                     onHide={() => setModalShow(false)}
                 />
             }
