@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import AccountModal from '../../Modal/AccountModal/AccountModal.js';
 
 import { Categories } from '../../../constants.js';
 import { db, storage } from '../../../utils/firebase.js';
 import { useAuth } from '../../../contexts/AuthContext.js';
-
+import { Alert, Modal } from 'react-bootstrap';
 
 const BecomeDoctor = () => {
     const { currentUser } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+    let formIsValid = true;
 
     const { userData } = location.state;
 
@@ -24,8 +26,19 @@ const BecomeDoctor = () => {
     const [hospitalTown, setHospitalTown] = useState('');
 
     const [progress, setProgress] = useState(0);
+    const [url, setUrl] = useState(null);
 
-    const uploadFile = (file) => {
+    const [visibleAlert, setVisibleAlert] = useState(false);
+    const [alertInfo, setAlertInfo] = useState('');
+    const [modalShow, setModalShow] = useState(false);
+
+    const [existingRequestError, setExistingRequestError] = useState('');
+
+    const handleValidation = () => {
+
+    }
+
+    const uploadFile = async (file) => {
         console.log(file);
         if (!file) {
             return;
@@ -41,16 +54,14 @@ const BecomeDoctor = () => {
             (err) => console.log(err),
             () => {
                 getDownloadURL(uploadTask.snapshot.ref)
-                    .then((url) => console.log(url));
+                    .then((url) => setUrl(prevState => url));
             }
         );
-
     }
-
 
     const onBecomeDoctorRequestHandler = async (e) => {
         e.preventDefault();
-
+        handleValidation();
         //validation
 
         // const doctors = collection(db, "doctors");
@@ -69,15 +80,19 @@ const BecomeDoctor = () => {
         const dataRequests = await getDocs(q);
 
         // console.log(dataRequests);
-
         if (!dataRequests.empty) {
-            console.log('You have already sent a request!');
+            setExistingRequestError('You have already sent a request!');
             return [];
         }
 
-        uploadFile(educDocuments[0])
+        if (!formIsValid) {
+            return;
+        }
+
+        await uploadFile(educDocuments[0]);
 
         try {
+            console.log(url);
             await setDoc(doc(db, "doctor-requests", currentUser?.uid), {
                 uid: currentUser?.uid,
                 education,
@@ -94,21 +109,37 @@ const BecomeDoctor = () => {
                 userAge: userData.age,
                 userEmail: userData.email,
             });
-            navigate(`/account/${currentUser?.uid}`);
-            //show information for successfull sent form!
         } catch (error) {
             console.log(error);
+            return;
         }
+
+        setAlertInfo('You have successfully send a request to be a doctor!');
+        setModalShow(true);
+        setTimeout(() => navigate(`/account/${currentUser?.uid}`), 3000);
     }
 
+    // console.log(url);
 
     return (
         <div>
+            {alertInfo === ''
+                ? null
+                : <AccountModal
+                    show={modalShow}
+                    alertInfo={alertInfo}
+                    onHide={() => setModalShow(false)}
+                />
+            }
+
             <section style={style.becomeDoctorSpan} >
                 <div className="App">
                     <div className="container">
                         <div className="row d-flex justify-content-center">
                             <div className="col-md-4">
+                                <small className="text-danger form-text">
+                                    {existingRequestError}
+                                </small>
                                 <form id="loginform" onSubmit={onBecomeDoctorRequestHandler} >
 
                                     <div className="form-group mb-3">

@@ -8,7 +8,6 @@ import { doc, getDoc } from 'firebase/firestore';
 import defaultAvatar from '../../assets/images/avatar.png';
 
 const AccountPage = () => {
-
   const { currentUser } = useAuth();
   const [userData, setUserData] = useState(null);
 
