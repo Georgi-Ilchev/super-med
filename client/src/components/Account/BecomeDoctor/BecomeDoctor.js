@@ -217,9 +217,9 @@ const BecomeDoctor = () => {
                                         <select
                                             className="form-select"
                                             id="inputGroupSelect01"
-                                            defaultValue={'default'}
+                                            defaultValue=''
                                             onChange={(event) => setSpecialization(event.target.value.trim())}>
-                                            <option value='default' selected hidden>Choose...</option>
+                                            <option value='' hidden>Choose...</option>
                                             {Categories.map(x =>
                                                 <option key={x} value={x}>{x}</option>
                                             )}
@@ -278,10 +278,10 @@ const BecomeDoctor = () => {
                                         <label>Hospital town</label>
                                         <select
                                             className="form-select"
-                                            id="inputGroupSelect01"
-                                            defaultValue={'default'}
+                                            id="inputGroupSelect02"
+                                            defaultValue=''
                                             onChange={(event) => setHospitalTown(event.target.value.trim())}>
-                                            <option value='default' selected hidden>Choose...</option>
+                                            <option value='' hidden>Choose...</option>
                                             {Towns.map(x =>
                                                 <option key={x} value={x}>{x}</option>
                                             )}
