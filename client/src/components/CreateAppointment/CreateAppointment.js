@@ -6,6 +6,7 @@ import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { collection, doc, getDocs, getDoc, query, setDoc, addDoc, where, updateDoc, arrayUnion } from 'firebase/firestore';
+import { Alert } from 'react-bootstrap';
 import { Calendar } from 'antd';
 import "antd/dist/antd.css";
 import './CreateAppointment.css';
@@ -18,6 +19,9 @@ const CreateAppointment = () => {
     const [date, setDate] = useState(null);
     const [day, setDay] = useState(null);
     const [hour, setHour] = useState(null);
+    const [takenHours, setTakenHours] = useState([]);
+    const [error, setError] = useState('');
+    const [showAlert, setAlert] = useState(false);
 
     const clickedDate = useCallback((value) => {
         const rawDate = value;
@@ -38,10 +42,20 @@ const CreateAppointment = () => {
 
             setDate(prevState => null);
             setDay(prevState => null);
-            console.log('greshna data');
+            setError('You cannot select a date that is in the past.');
+            setAlert(true);
             return;
         }
     }, []);
+
+    useEffect(() => {
+        (async () => {
+            const doctorAppointments = collection(db, `appointments/${params.doctorId}/currentDoctorApp`);
+            const q = query(doctorAppointments, where("date", "==", date));
+            const dataAppointment = await getDocs(q);
+            setTakenHours((state) => dataAppointment.docs.map((appointment) => appointment.data().hour));
+        })();
+    }, [date]);
 
     const reserveAppointment = async (e) => {
         if (!date || !hour || !currentUser) {
@@ -49,6 +63,14 @@ const CreateAppointment = () => {
         }
 
         const generatedId = autoId();
+
+        setError('');
+        if (takenHours.find((takenHour) => takenHour.includes(hour))) {
+            console.log('This hour is already taken');
+            setError('This hour is already taken.');
+            setAlert(true);
+            return;
+        }
 
         try {
             await setDoc(doc(db, `appointments/${params.doctorId}`, 'currentDoctorApp', generatedId), {
@@ -87,6 +109,8 @@ const CreateAppointment = () => {
             setDoctorData(prevState => doctor.data());
         })();
     }, [params.doctorId]);
+
+
 
     function clickedHour(el) {
         setHour(prevState => el.target.value);
@@ -147,6 +171,12 @@ const CreateAppointment = () => {
                             : <p>Waiting for your response</p>}
                     </div>
                 </div>
+                {showAlert &&
+                    <Alert variant="danger" onClose={() => setAlert(false)} dismissible>
+                        <Alert.Heading>Something went wrong!</Alert.Heading>
+                        <p>{error}</p>
+                    </Alert>
+                }
             </div>
         </section>
     )
