@@ -13,9 +13,17 @@ const ButtonsCard = ({
     const [takenHours, setTakenHours] = useState([]);
 
     useEffect(() => {
+        // (async () => {
+        //     const doctorAppointments = collection(db, `appointments/${doctorId}/currentDoctorApp`);
+        //     const q = query(doctorAppointments, where("date", "==", date));
+        //     const dataAppointment = await getDocs(q);
+        //     setTakenHours((state) => dataAppointment.docs.map((appointment) => appointment.data().hour));
+        // })();
+        console.log(doctorId);
+
         (async () => {
-            const doctorAppointments = collection(db, `appointments/${doctorId}/currentDoctorApp`);
-            const q = query(doctorAppointments, where("date", "==", date));
+            const doctorAppointments = collection(db, `appointments`);
+            const q = query(doctorAppointments, where("date", "==", date), where("doctorId", "==", doctorId));
             const dataAppointment = await getDocs(q);
             setTakenHours((state) => dataAppointment.docs.map((appointment) => appointment.data().hour));
         })();

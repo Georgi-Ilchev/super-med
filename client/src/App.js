@@ -37,6 +37,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/doctors" element={<Categories />} />
           <Route path="/doctors/:category" element={<Categories />} />
+          {/* <Route path="/doctors/:town" element={<Categories />} /> */}
           <Route path="/doctors/:doctorId/details" element={<DoctorDetails />} />
           <Route path="/doctors/:doctorId/createappointment" element={<CreateAppointment />} />
           <Route path="/doctors/info" element={<DoctorsInfo />} />

@@ -1,4 +1,5 @@
 import CategoryNavigation from "./CategoryNavigation/CategoryNavigation.js";
+import TownNavigation from "./CategoryNavigation/TownNavigation.js";
 import DoctorCard from "../Cards/DoctorCard/DoctorCard.js";
 import HeaderCard from "../Cards/DoctorCard/HeaderCard.js";
 
@@ -14,6 +15,8 @@ const Categories = () => {
     const [dataDoctors, setDataDoctors] = useState([]);
     const [flag, setFlag] = useState(true);
 
+    console.log(params);
+
     useEffect(() => {
         if (params.category !== undefined) {
             (async () => {
@@ -27,7 +30,13 @@ const Categories = () => {
 
                 setFlag(false);
             })();
-        } else {
+        }
+
+        // else if (params.town !== undefined) {
+        //     console.log('here');
+        // }
+
+        else {
             (async () => {
                 const doctors = collection(db, 'doctors');
                 const q = query(doctors);
@@ -57,9 +66,17 @@ const Categories = () => {
                 <CategoryNavigation></CategoryNavigation>
             </div>
 
+            {/* <div className="categories-nav-bar">
+                <TownNavigation></TownNavigation>
+            </div> */}
+
             <div className="categories-header-card">
                 <HeaderCard category={params.category}></HeaderCard>
             </div>
+
+            {/* <div className="categories-header-card">
+                <HeaderCard category={params.town}></HeaderCard>
+            </div> */}
 
             <ul>
                 {/* <div className="row offset-1"> */}
@@ -70,9 +87,9 @@ const Categories = () => {
                             {/* {console.log(x)} */}
                         </DoctorCard>)
                     : flag ? <p className="no-doctors-message">Loading...</p>
-                           : <div>
-                               <p className="no-doctors-message">There are no doctors added in this field yet</p>
-                           </div>}
+                        : <div>
+                            <p className="no-doctors-message">There are no doctors added in this field yet</p>
+                        </div>}
                 {/* </div> */}
 
             </ul>

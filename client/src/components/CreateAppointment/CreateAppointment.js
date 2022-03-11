@@ -50,8 +50,10 @@ const CreateAppointment = () => {
 
     useEffect(() => {
         (async () => {
-            const doctorAppointments = collection(db, `appointments/${params.doctorId}/currentDoctorApp`);
-            const q = query(doctorAppointments, where("date", "==", date));
+            // const doctorAppointments = collection(db, `appointments/${params.doctorId}/currentDoctorApp`);
+            const doctorAppointments = collection(db, `appointments`);
+            // const q = query(doctorAppointments, where("date", "==", date));
+            const q = query(doctorAppointments, where("doctorId", "==", params.doctorId), where("date", "==", date));
             const dataAppointment = await getDocs(q);
             setTakenHours((state) => dataAppointment.docs.map((appointment) => appointment.data().hour));
         })();
@@ -72,8 +74,29 @@ const CreateAppointment = () => {
             return;
         }
 
+        // try {
+        //     await setDoc(doc(db, `appointments/${params.doctorId}`, 'currentDoctorApp', generatedId), {
+        //         doctorId: params.doctorId,
+        //         userId: currentUser.uid,
+        //         date: date,
+        //         hour: hour,
+        //         status: 'active',
+        //         address: doctorData.hospitalAddres,
+        //         hospital: doctorData.hospitalName
+        //     });
+
+        //     await updateDoc(doc(db, 'users', currentUser.uid), {
+        //         appointments: arrayUnion({
+        //             appointmentId: generatedId,
+        //             doctorId: params.doctorId,
+        //         })
+        //     });
+        // } catch (error) {
+        //     console.log(error);
+        // }
+
         try {
-            await setDoc(doc(db, `appointments/${params.doctorId}`, 'currentDoctorApp', generatedId), {
+            const docRef = await addDoc(collection(db, 'appointments'), {
                 doctorId: params.doctorId,
                 userId: currentUser.uid,
                 date: date,
@@ -85,7 +108,7 @@ const CreateAppointment = () => {
 
             await updateDoc(doc(db, 'users', currentUser.uid), {
                 appointments: arrayUnion({
-                    appointmentId: generatedId,
+                    appointmentId: docRef.id,
                     doctorId: params.doctorId,
                 })
             });
@@ -216,27 +239,3 @@ const style = {
         paddingTop: '10rem'
     }
 }
-
-
-// try {
-//     const docRef = await addDoc(collection(db, 'appointments'), {
-//         doctorId: params.doctorId,
-//         userId: currentUser.uid,
-//         date: date,
-//         hour: hour,
-//         status: 'active',
-//         address: doctorData.hospitalAddres,
-//         hospital: doctorData.hospitalName
-//     });
-
-//     console.log(docRef);
-
-//     await updateDoc(doc(db, 'users', currentUser.uid), {
-//         appointments: arrayUnion({
-//             appointmentId: docRef.id,
-//             doctorId: params.doctorId,
-//         })
-//     });
-// } catch (error) {
-//     console.log(error);
-// }
