@@ -19,7 +19,7 @@ const ButtonsCard = ({
         //     const dataAppointment = await getDocs(q);
         //     setTakenHours((state) => dataAppointment.docs.map((appointment) => appointment.data().hour));
         // })();
-        console.log(doctorId);
+        // console.log(doctorId);
 
         (async () => {
             const doctorAppointments = collection(db, `appointments`);

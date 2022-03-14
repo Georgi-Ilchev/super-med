@@ -15,7 +15,7 @@ const Categories = () => {
     const [dataDoctors, setDataDoctors] = useState([]);
     const [flag, setFlag] = useState(true);
 
-    console.log(params);
+    // console.log(params);
 
     useEffect(() => {
         if (params.category !== undefined) {

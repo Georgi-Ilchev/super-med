@@ -98,6 +98,7 @@ const CreateAppointment = () => {
         try {
             const docRef = await addDoc(collection(db, 'appointments'), {
                 doctorId: params.doctorId,
+                doctorName: doctorData.fullName,
                 userId: currentUser.uid,
                 date: date,
                 hour: hour,

@@ -1,7 +1,7 @@
 import AppointmentTable from './AppointmentTable/AppointmentTable.js';
 import { useAuth } from '../../contexts/AuthContext.js';
 import { useEffect, useState } from 'react';
-import { collection, doc, getDoc, query, where, documentId, getDocs, list } from 'firebase/firestore';
+import { collection, doc, getDoc, query, where, documentId, getDocs, list, orderBy } from 'firebase/firestore';
 import { db } from '../../utils/firebase.js';
 
 const Appointments = () => {
@@ -13,7 +13,7 @@ const Appointments = () => {
         (async () => {
             if (currentUser) {
                 const appointments = collection(db, 'appointments');
-                const q = query(appointments, where("userId", "==", currentUser.uid));
+                const q = query(appointments, where("userId", "==", currentUser.uid), orderBy("date", "asc"), orderBy("hour", "asc"));
                 const userAppointments = await getDocs(q);
                 setAppointments(userAppointments.docs.map(x => ({
                     id: x.id,
