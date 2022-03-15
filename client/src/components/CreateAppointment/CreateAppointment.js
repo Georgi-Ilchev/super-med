@@ -107,12 +107,12 @@ const CreateAppointment = () => {
                 hospital: doctorData.hospitalName
             });
 
-            await updateDoc(doc(db, 'users', currentUser.uid), {
-                appointments: arrayUnion({
-                    appointmentId: docRef.id,
-                    doctorId: params.doctorId,
-                })
-            });
+            // await updateDoc(doc(db, 'users', currentUser.uid), {
+            //     appointments: arrayUnion({
+            //         appointmentId: docRef.id,
+            //         doctorId: params.doctorId,
+            //     })
+            // });
         } catch (error) {
             console.log(error);
         }
