@@ -18,38 +18,57 @@ const Categories = () => {
     // console.log(params);
 
     useEffect(() => {
-        if (params.category !== undefined) {
+        let isMounted = true;
+        if (params.category !== undefined && params.town === undefined) {
             (async () => {
                 const doctors = collection(db, 'doctors');
                 const q = query(doctors, where("type", "==", params.category));
                 const dataUsers = await getDocs(q);
-                setDataDoctors(dataUsers.docs.map(x => (/*x.data()*/ /*x.id*/ {
-                    id: x.id,
-                    data: x.data()
-                })));
 
-                setFlag(false);
+                if (isMounted) {
+                    setDataDoctors(dataUsers.docs.map(x => (/*x.data()*/ /*x.id*/ {
+                        id: x.id,
+                        data: x.data()
+                    })));
+
+                    setFlag(false);
+                }
             })();
-        }
 
-        // else if (params.town !== undefined) {
-        //     console.log('here');
-        // }
+        } else if (params.category !== undefined && params.town !== undefined) {
+            (async () => {
+                const doctors = collection(db, 'doctors');
+                const q = query(doctors, where("type", "==", params.category), where("town", "==", params.town));
+                const dataUsers = await getDocs(q);
 
-        else {
+                if (isMounted) {
+                    setDataDoctors(dataUsers.docs.map(x => (/*x.data()*/ /*x.id*/ {
+                        id: x.id,
+                        data: x.data()
+                    })));
+
+                    setFlag(false);
+                }
+            })();
+        } else {
             (async () => {
                 const doctors = collection(db, 'doctors');
                 const q = query(doctors);
                 const dataUsers = await getDocs(q);
-                setDataDoctors(dataUsers.docs.map(x => ({
-                    id: x.id,
-                    data: x.data()
-                })));
 
-                setFlag(false);
+                if (isMounted) {
+                    setDataDoctors(dataUsers.docs.map(x => ({
+                        id: x.id,
+                        data: x.data()
+                    })));
+
+                    setFlag(false);
+                }
             })();
         }
-    }, [params.category]);
+
+        return () => { isMounted = false };
+    }, [params.category, params.town]);
 
     // console.log(dataDoctors);
 
@@ -64,11 +83,14 @@ const Categories = () => {
             </div>
             <div className="categories-nav-bar">
                 <CategoryNavigation></CategoryNavigation>
+                {params.category
+                    ? <div className="towns-nav-bar"><TownNavigation category={params.category}></TownNavigation></div>
+                    : null
+                }
             </div>
 
-            {/* <div className="categories-nav-bar">
-                <TownNavigation></TownNavigation>
-            </div> */}
+            <div className="categories-nav-bar">
+            </div>
 
             <div className="categories-header-card">
                 <HeaderCard category={params.category}></HeaderCard>
@@ -77,6 +99,7 @@ const Categories = () => {
             {/* <div className="categories-header-card">
                 <HeaderCard category={params.town}></HeaderCard>
             </div> */}
+            <hr />
 
             <ul>
                 {/* <div className="row offset-1"> */}

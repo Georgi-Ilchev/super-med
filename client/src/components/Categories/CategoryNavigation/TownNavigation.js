@@ -51,12 +51,12 @@ const CustomMenu = React.forwardRef(
     },
 );
 
-const TownNavigation = () => {
+const TownNavigation = ({ category }) => {
     return (
-        <DropdownButton variant='warning' size="lg" title="Types">
+        <DropdownButton variant='secondary' size="lg" title="Towns">
             <Dropdown as={CustomMenu}>
                 {Towns.map(x =>
-                    <Dropdown.Item key={x} as={Link} to={`/doctors/${x}`}>{x}</Dropdown.Item>
+                    <Dropdown.Item key={x} as={Link} to={`/doctors/${category}/${x}`}>{x}</Dropdown.Item>
                 )}
             </Dropdown>
         </DropdownButton>

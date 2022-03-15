@@ -16,6 +16,9 @@
 .categories-nav-bar{
     text-align: left;
     margin-left: 6rem;
+
+    position: absolute;
+    display: grid;
 }
 
 .categories-header-card{
@@ -27,4 +30,12 @@
     font-size: 50px;
     margin-top: 10rem;
     text-align: center;
+}
+
+.towns-nav-bar{
+    position: absolute;
+
+    grid-column: 2;
+    grid-row: 1;
+    left: 70px;
 }
