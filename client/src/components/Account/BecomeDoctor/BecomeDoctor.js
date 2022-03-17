@@ -17,6 +17,8 @@ const BecomeDoctor = () => {
 
     const { userData } = location.state;
 
+    console.log('here1');
+
     const [education, setEducation] = useState('');
     const [specialization, setSpecialization] = useState('');
     const [describe, setDescribe] = useState('');
@@ -41,7 +43,7 @@ const BecomeDoctor = () => {
 
     const [existingRequestError, setExistingRequestError] = useState('');
 
-    const handleValidation = () => {
+    const handleValidation = (/*education, specialization, describe, educDocuments, hospitalName, hospitalAddres, hospitalTown*/) => {
         setEducationError('');
         setSpecializationError('');
         setDescribeError('');
@@ -49,8 +51,6 @@ const BecomeDoctor = () => {
         setHospitalAddresError('');
         setHospitalTownError('');
         setEducDocumentsError('');
-
-        // Todo: resolve error with select/options
 
         formIsValid = true;
 
@@ -108,10 +108,12 @@ const BecomeDoctor = () => {
             (err) => console.log(err),
             () => {
                 getDownloadURL(uploadTask.snapshot.ref)
+                    // .then((url) => console.log(url));
                     .then((url) => setUrl(prevState => url));
             }
         );
     }
+    // console.log(url);
 
     const onBecomeDoctorRequestHandler = async (e) => {
         e.preventDefault();
@@ -129,6 +131,7 @@ const BecomeDoctor = () => {
         //     return [];
         // }
 
+
         const requests = collection(db, "doctor-requests");
         const q = query(requests, where('uid', '==', currentUser?.uid));
         const dataRequests = await getDocs(q);
@@ -139,12 +142,23 @@ const BecomeDoctor = () => {
             return [];
         }
 
+        // let education = e.target[0].value.trim();
+        // let specialization = e.target[1].value.trim();
+        // let describe = e.target[2].value.trim();
+        // let educDocuments = e.target[3].value.trim();
+        // let hospitalName = e.target[4].value.trim();
+        // let hospitalAddres = e.target[5].value.trim();
+        // let hospitalTown = e.target[6].value.trim();
+        // handleValidation(education, specialization, describe, educDocuments, hospitalName, hospitalAddres, hospitalTown);
+
+
+        // console.log('here2');
         if (!formIsValid) {
             return;
         }
+        return;
 
         await uploadFile(educDocuments[0]);
-
         try {
             console.log(url);
             await setDoc(doc(db, "doctor-requests", currentUser?.uid), {
@@ -194,7 +208,7 @@ const BecomeDoctor = () => {
                                 <small className="text-danger form-text">
                                     {existingRequestError}
                                 </small>
-                                <form id="loginform" onSubmit={onBecomeDoctorRequestHandler} >
+                                <form id="loginform" onSubmit={onBecomeDoctorRequestHandler}>
 
                                     <div className="form-group mb-3">
                                         <label>Education</label>
@@ -202,10 +216,9 @@ const BecomeDoctor = () => {
                                             type="text"
                                             className="form-control"
                                             required
-                                            // name="education"
                                             placeholder="Harvard"
-                                            onChange={(event) => setEducation(event.target.value.trim())}
-                                        // defaultValue={userData?.fullName}
+                                            name="education"
+                                            onBlur={(event) => setEducation(event.target.value.trim())}
                                         />
                                         <small className="text-danger form-text">
                                             {educationError}
@@ -218,7 +231,8 @@ const BecomeDoctor = () => {
                                             className="form-select"
                                             id="inputGroupSelect01"
                                             defaultValue=''
-                                            onChange={(event) => setSpecialization(event.target.value.trim())}>
+                                            name="specialization"
+                                            onBlur={(event) => setSpecialization(event.target.value.trim())}>
                                             <option value='' hidden>Choose...</option>
                                             {Categories.map(x =>
                                                 <option key={x} value={x}>{x}</option>
@@ -237,8 +251,7 @@ const BecomeDoctor = () => {
                                             // name="phoneNumber"
                                             placeholder="Description...."
                                             id='exampleFormControlTextarea1'
-                                            onChange={(event) => setDescribe(event.target.value.trim())}
-                                        // defaultValue={userData?.phoneNumber}
+                                            onBlur={(event) => setDescribe(event.target.value.trim())}
                                         />
                                         <small className="text-danger form-text">
                                             {describeError}
@@ -251,7 +264,8 @@ const BecomeDoctor = () => {
                                             className="form-control"
                                             type="file"
                                             id="formFile"
-                                            onChange={(event) => setEducDocuments(event.target.files)} />
+                                            onBlur={(event) => setEducDocuments(event.target.files)}
+                                        />
                                         <small className="text-danger form-text">
                                             {educDocumentsError}
                                         </small>
@@ -266,8 +280,7 @@ const BecomeDoctor = () => {
                                             className="form-control"
                                             // name="education"
                                             placeholder="Okrujna"
-                                            onChange={(event) => setHospitalName(event.target.value.trim())}
-                                        // defaultValue={userData?.fullName}
+                                            onBlur={(event) => setHospitalName(event.target.value.trim())}
                                         />
                                         <small className="text-danger form-text">
                                             {hospitalNameError}
@@ -280,7 +293,8 @@ const BecomeDoctor = () => {
                                             className="form-select"
                                             id="inputGroupSelect02"
                                             defaultValue=''
-                                            onChange={(event) => setHospitalTown(event.target.value.trim())}>
+                                            onBlur={(event) => setHospitalTown(event.target.value.trim())}
+                                        >
                                             <option value='' hidden>Choose...</option>
                                             {Towns.map(x =>
                                                 <option key={x} value={x}>{x}</option>
@@ -298,9 +312,7 @@ const BecomeDoctor = () => {
                                             className="form-control"
                                             name="PIN"
                                             placeholder="City, Street 00"
-                                            onChange={(event) => setHospitalAddres(event.target.value.trim())}
-                                        // defaultValue={userData?.address}
-
+                                            onBlur={(event) => setHospitalAddres(event.target.value.trim())}
                                         />
                                         <small className="text-danger form-text">
                                             {hospitalAddresError}
