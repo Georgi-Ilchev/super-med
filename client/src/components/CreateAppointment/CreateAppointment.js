@@ -1,6 +1,7 @@
 import { useAuth } from '../../contexts/AuthContext.js';
 import { db } from '../../utils/firebase.js';
 import ButtonsCard from '../Cards/ButtonsCard/ButtonsCard.js';
+import { WeeklyHours } from '../../constants.js';
 
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
@@ -16,6 +17,7 @@ const CreateAppointment = () => {
     const navigate = useNavigate();
     const { currentUser } = useAuth();
     const [doctorData, setDoctorData] = useState(null);
+    const [doctorHours, setDoctorHours] = useState(null);
     const [date, setDate] = useState(null);
     const [day, setDay] = useState(null);
     const [hour, setHour] = useState(null);
@@ -70,6 +72,13 @@ const CreateAppointment = () => {
         if (takenHours.find((takenHour) => takenHour.includes(hour))) {
             console.log('This hour is already taken');
             setError('This hour is already taken.');
+            setAlert(true);
+            return;
+        }
+
+        if (!WeeklyHours.find((doctorHours) => doctorHours.includes(hour))) {
+            console.log('wrong hour');
+            setError('Do not edit html!');
             setAlert(true);
             return;
         }
@@ -131,6 +140,7 @@ const CreateAppointment = () => {
             const ref = await doc(db, 'doctors', params.doctorId);
             const doctor = await getDoc(ref);
             setDoctorData(prevState => doctor.data());
+            setDoctorHours(prevState => doctor.data().workSchedule);
         })();
     }, [params.doctorId]);
 
@@ -185,6 +195,7 @@ const CreateAppointment = () => {
                                     day={day}
                                     clickedHour={clickedHour}
                                     doctorId={params.doctorId}
+                                    doctorHours={doctorHours}
                                     date={date} >
                                 </ButtonsCard>
                                 {date && hour
@@ -209,9 +220,8 @@ const CreateAppointment = () => {
 export default CreateAppointment;
 
 function disabledDate(current) {
-    // Can not select days before today and sundays
-    return (current && current < moment().startOf('day')) ||
-        (moment(current).day() === 0)
+    // Can not select days before today
+    return (current && current < moment().startOf('day'))
 }
 
 
