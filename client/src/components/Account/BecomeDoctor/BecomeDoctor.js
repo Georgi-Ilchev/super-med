@@ -4,16 +4,17 @@ import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firesto
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import AccountModal from '../../Modal/AccountModal/AccountModal.js';
 
-import { Categories, Towns } from '../../../constants.js';
+import { Categories, Towns, WeeklyHours, WorkedDays } from '../../../constants.js';
 import { db, storage } from '../../../utils/firebase.js';
 import { useAuth } from '../../../contexts/AuthContext.js';
-import { Alert, Modal } from 'react-bootstrap';
+import { Alert, Modal, Accordion, Form } from 'react-bootstrap';
 
 const BecomeDoctor = () => {
     const { currentUser } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
     let formIsValid = true;
+    let hourFormIsValid = true;
 
     const { userData } = location.state;
 
@@ -34,6 +35,7 @@ const BecomeDoctor = () => {
     const [hospitalAddresError, setHospitalAddresError] = useState('');
     const [hospitalTownError, setHospitalTownError] = useState('');
     const [educDocumentsError, setEducDocumentsError] = useState('');
+    const [hoursError, setHoursError] = useState('');
 
     const [progress, setProgress] = useState(0);
     const [url, setUrl] = useState(null);
@@ -87,7 +89,7 @@ const BecomeDoctor = () => {
 
         if (Towns.find((town) => hospitalTown === town)) {
         } else {
-            setHospitalTownError('Town doesn not exist!');
+            setHospitalTownError('Town does not exist!');
             formIsValid = false;
         }
     }
@@ -115,9 +117,42 @@ const BecomeDoctor = () => {
     }
     // console.log(url);
 
+    const hoursValidation = (mondayHours, thuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours) => {
+        let choosenHours = [...new Set(
+            [...mondayHours,
+            ...thuesdayHours,
+            ...wednesdayHours,
+            ...thursdayHours,
+            ...fridayHours,
+            ...saturdayHours,
+            ...sundayHours,])];
+
+        hourFormIsValid = true;
+        setHoursError('');
+
+        if (choosenHours.length > 0) {
+            let allFounded = choosenHours.every(h => WeeklyHours.includes(h));
+            if (allFounded) {
+                console.log('vyarno');
+            } else {
+                setHoursError('You choose a wrong time!');
+                hourFormIsValid = false;
+                console.log('greshka');
+                return;
+            }
+        } else {
+            setHoursError('Choose at least one hour!');
+            hourFormIsValid = false;
+            console.log('nyama izbrani chasowe');
+            return;
+        }
+
+    }
+
     const onBecomeDoctorRequestHandler = async (e) => {
         e.preventDefault();
         handleValidation();
+
         //validation
 
         // const doctors = collection(db, "doctors");
@@ -136,12 +171,22 @@ const BecomeDoctor = () => {
         const q = query(requests, where('uid', '==', currentUser?.uid));
         const dataRequests = await getDocs(q);
 
-        // console.log(dataRequests);
         if (!dataRequests.empty) {
             setExistingRequestError('You have already sent a request!');
             return [];
         }
 
+        const formData = new FormData(e.target)
+
+        const mondayHours = formData.getAll('Monday');
+        const thuesdayHours = formData.getAll('Thuesday');
+        const wednesdayHours = formData.getAll('Wednesday');
+        const thursdayHours = formData.getAll('Thursday');
+        const fridayHours = formData.getAll('Friday');
+        const saturdayHours = formData.getAll('Saturday');
+        const sundayHours = formData.getAll('Sunday');
+
+        hoursValidation(mondayHours, thuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours);
         // let education = e.target[0].value.trim();
         // let specialization = e.target[1].value.trim();
         // let describe = e.target[2].value.trim();
@@ -151,12 +196,10 @@ const BecomeDoctor = () => {
         // let hospitalTown = e.target[6].value.trim();
         // handleValidation(education, specialization, describe, educDocuments, hospitalName, hospitalAddres, hospitalTown);
 
-
-        // console.log('here2');
-        if (!formIsValid) {
+        if (!formIsValid || !hourFormIsValid) {
             return;
         }
-        return;
+        // return;
 
         await uploadFile(educDocuments[0]);
         try {
@@ -176,6 +219,15 @@ const BecomeDoctor = () => {
                 userPin: userData.pin,
                 userAge: userData.age,
                 userEmail: userData.email,
+                workSchedule: {
+                    monday: mondayHours,
+                    thuesday: thuesdayHours,
+                    wednesday: wednesdayHours,
+                    thursday: thursdayHours,
+                    friday: fridayHours,
+                    saturday: saturdayHours,
+                    sunday: sundayHours,
+                }
             });
         } catch (error) {
             console.log(error);
@@ -319,7 +371,31 @@ const BecomeDoctor = () => {
                                         </small>
                                     </div>
 
-                                    <button type="submit" className="btn mt-5 btn-primary">
+                                    <div className="form-group mb-3">
+                                        <label>Choose your time to work</label>
+                                        <div>
+                                            <small className="text-danger form-text">
+                                                {hoursError}
+                                            </small>
+                                        </div>
+                                        {WorkedDays.map(day =>
+                                            <Accordion key={day}>
+                                                <Accordion.Item eventKey='0'>
+                                                    <Accordion.Header>{day}</Accordion.Header>
+                                                    <Accordion.Body >
+                                                        {WeeklyHours.map(x =>
+                                                            <div className="form-check form-check-inline" key={x} style={style.accordion}>
+                                                                <input className="form-check-input" type="checkbox" id="inlineCheckbox1" style={style.checkbox} name={day} value={x} />
+                                                                <label className="form-check-label" htmlFor="inlineCheckbox1">{x}</label>
+                                                            </div>
+                                                        )}
+                                                    </Accordion.Body>
+                                                </Accordion.Item>
+                                            </Accordion>
+                                        )}
+                                    </div>
+
+                                    < button type="submit" className="btn mt-5 btn-primary" >
                                         Send request
                                     </button>
                                 </form>
@@ -327,8 +403,8 @@ const BecomeDoctor = () => {
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     )
 }
 
@@ -337,5 +413,15 @@ export default BecomeDoctor;
 const style = {
     becomeDoctorSpan: {
         paddingTop: '3rem',
+    },
+    accordion: {
+        // display: 'inline-block',
+        margin: 'auto',
+        padding: '0.1rem 1.5rem 0.1rem 1.9rem',
+    },
+    checkbox: {
+        width: '20px',
+        height: '20px',
+        cursor: 'pointer'
     }
 }

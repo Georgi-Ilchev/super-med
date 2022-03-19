@@ -32,6 +32,7 @@ const BecomeDoctorCard = ({
                 education: data.education,
                 hospitalName: data.hospitalName,
                 hospitalAddres: data.hospitalAddres,
+                workSchedule: data.workSchedule,
             });
             console.log('created');
 
