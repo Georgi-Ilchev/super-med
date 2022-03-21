@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { db } from '../../../utils/firebase.js';
 import { Button } from 'react-bootstrap';
-
+import './BecomeDoctorDetails.css';
 
 const BecomeDoctorDetails = () => {
     const params = useParams();
@@ -25,7 +25,7 @@ const BecomeDoctorDetails = () => {
         <div className="card mb-3" style={{ maxWidth: '70%', margin: 'auto', border: 'none', padding: '10px', marginTop: '3rem' }}>
             <div className="row g-0">
                 <div className="col-md-4">
-                    <img src="..." className="img-fluid rounded-start" alt="..." />
+                    <img src={becomeDoctor?.educationUrl} className="img-fluid rounded-start" alt="..." />
                 </div>
                 <div className="col-md-8">
                     <div className="card-body">
@@ -52,3 +52,12 @@ const BecomeDoctorDetails = () => {
 }
 
 export default BecomeDoctorDetails;
+
+// const style = {
+//     cardImg: {
+//         width: '100%',
+//         height: '35vw',
+//         objectFit: 'cover',
+//         cursor: 'pointer'
+//     }
+// }

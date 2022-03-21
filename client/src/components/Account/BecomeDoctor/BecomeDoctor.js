@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
@@ -18,7 +18,7 @@ const BecomeDoctor = () => {
 
     const { userData } = location.state;
 
-    console.log('here1');
+    const [, updateState] = useState();
 
     const [education, setEducation] = useState('');
     const [specialization, setSpecialization] = useState('');
@@ -44,6 +44,8 @@ const BecomeDoctor = () => {
     const [modalShow, setModalShow] = useState(false);
 
     const [existingRequestError, setExistingRequestError] = useState('');
+
+    console.log('state render');
 
     const handleValidation = (/*education, specialization, describe, educDocuments, hospitalName, hospitalAddres, hospitalTown*/) => {
         setEducationError('');
@@ -95,7 +97,7 @@ const BecomeDoctor = () => {
     }
 
     const uploadFile = async (file) => {
-        console.log(file);
+        // console.log(file);
         if (!file) {
             return;
         }
@@ -115,7 +117,6 @@ const BecomeDoctor = () => {
             }
         );
     }
-    // console.log(url);
 
     const hoursValidation = (mondayHours, thuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours) => {
         let choosenHours = [...new Set(
@@ -149,12 +150,15 @@ const BecomeDoctor = () => {
 
     }
 
+    // call force-update when image is uploaded last in the form. (need re-render component, to get image url if it uploaded last);
+
+    const forceUpdate = useCallback(() => updateState({}), []);
+
     const onBecomeDoctorRequestHandler = async (e) => {
         e.preventDefault();
         handleValidation();
 
         //validation
-
         // const doctors = collection(db, "doctors");
         // const qu = query(doctors, where('uid', '==', currentUser?.uid));
         // const dataDoctors = await getDocs(qu);
@@ -165,7 +169,6 @@ const BecomeDoctor = () => {
         //     console.log('You are already a doctor!');
         //     return [];
         // }
-
 
         const requests = collection(db, "doctor-requests");
         const q = query(requests, where('uid', '==', currentUser?.uid));
@@ -199,17 +202,19 @@ const BecomeDoctor = () => {
         if (!formIsValid || !hourFormIsValid) {
             return;
         }
-        // return;
 
-        await uploadFile(educDocuments[0]);
+        if (progress != 100) {
+            forceUpdate();
+            return;
+        }
+
         try {
-            console.log(url);
             await setDoc(doc(db, "doctor-requests", currentUser?.uid), {
                 uid: currentUser?.uid,
                 education,
                 specialization,
                 describe,
-                // educDocuments,
+                educationUrl: url,
                 hospitalName,
                 hospitalAddres,
                 hospitalTown,
@@ -238,8 +243,6 @@ const BecomeDoctor = () => {
         setModalShow(true);
         setTimeout(() => navigate(`/account/${currentUser?.uid}`), 2200);
     }
-
-    // console.log(url);
 
     return (
         <div>
@@ -317,6 +320,7 @@ const BecomeDoctor = () => {
                                             type="file"
                                             id="formFile"
                                             onBlur={(event) => setEducDocuments(event.target.files)}
+                                            onChange={(event) => uploadFile(event.target.files[0])}
                                         />
                                         <small className="text-danger form-text">
                                             {educDocumentsError}
@@ -395,9 +399,14 @@ const BecomeDoctor = () => {
                                         )}
                                     </div>
 
-                                    < button type="submit" className="btn mt-5 btn-primary" >
-                                        Send request
-                                    </button>
+                                    {progress == 100
+                                        ? <button type="submit" className="btn mt-5 btn-primary" >
+                                            Send request
+                                        </button>
+                                        : <button className="btn mt-5 btn-primary" disabled>
+                                            Send request
+                                        </button>
+                                    }
                                 </form>
                             </div>
                         </div>

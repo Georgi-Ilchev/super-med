@@ -145,7 +145,6 @@ const CreateAppointment = () => {
     }, [params.doctorId]);
 
 
-
     function clickedHour(el) {
         setHour(prevState => el.target.value);
         // el.target.style.backgroundStyle = 'red';
