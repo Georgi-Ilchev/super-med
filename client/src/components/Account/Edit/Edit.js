@@ -1,5 +1,6 @@
 import { db } from '../../../utils/firebase';
 import AccountModal from '../../Modal/AccountModal/AccountModal.js';
+import { useAuth } from '../../../contexts/AuthContext.js';
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -7,9 +8,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 
 const EditProfile = () => {
-    let params = useParams();
+    // let params = useParams();
     let formIsValid = true;
-
+    const { currentUser } = useAuth();
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState(null);
@@ -64,7 +65,8 @@ const EditProfile = () => {
             return;
         }
 
-        const ref = doc(db, 'users', params?.uid);
+        // const ref = doc(db, 'users', params?.uid);
+        const ref = doc(db, 'users', currentUser.uid);
 
 
 
@@ -77,12 +79,18 @@ const EditProfile = () => {
 
         setModalInfo('You have successfully edit your account!');
         setModalShow(true);
-        setTimeout(() => navigate(`/account/${params.uid}`), 1500);
+        setTimeout(() => navigate(`/account/${currentUser.uid}`), 1500);
 
     }, [age, pin, address, fullName, phoneNumber]);
 
 
     useEffect(() => {
+        (async () => {
+            if (currentUser === null || currentUser === undefined) {
+                navigate('/');
+            }
+        })();
+
         if (!userData) {
             return;
         }
@@ -95,17 +103,17 @@ const EditProfile = () => {
 
     useEffect(() => {
         (async () => {
-            if (!params?.uid) {
+            if (!currentUser.uid) {
                 return;
             }
 
-            const ref = await doc(db, 'users', params.uid);
+            const ref = await doc(db, 'users', currentUser.uid);
 
             const user = await getDoc(ref);
 
             setUserData(prevState => user.data());
         })();
-    }, [params?.uid]);
+    }, [currentUser?.uid]);
 
 
     return (

@@ -13,10 +13,9 @@ const BecomeDoctor = () => {
     const { currentUser } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
+
     let formIsValid = true;
     let hourFormIsValid = true;
-
-    const { userData } = location.state;
 
     const [, updateState] = useState();
 
@@ -45,9 +44,7 @@ const BecomeDoctor = () => {
 
     const [existingRequestError, setExistingRequestError] = useState('');
 
-    console.log('state render');
-
-    const handleValidation = (/*education, specialization, describe, educDocuments, hospitalName, hospitalAddres, hospitalTown*/) => {
+    const handleValidation = () => {
         setEducationError('');
         setSpecializationError('');
         setDescribeError('');
@@ -151,13 +148,19 @@ const BecomeDoctor = () => {
     }
 
     // call force-update when image is uploaded last in the form. (need re-render component, to get image url if it uploaded last);
-
     const forceUpdate = useCallback(() => updateState({}), []);
+
+    useEffect(() => {
+        if (location.state == null) {
+            navigate('/');
+        }
+    }, []);
 
     const onBecomeDoctorRequestHandler = async (e) => {
         e.preventDefault();
         handleValidation();
 
+        const { userData } = location.state;
         //validation
         // const doctors = collection(db, "doctors");
         // const qu = query(doctors, where('uid', '==', currentUser?.uid));
@@ -190,14 +193,6 @@ const BecomeDoctor = () => {
         const sundayHours = formData.getAll('Sunday');
 
         hoursValidation(mondayHours, thuesdayHours, wednesdayHours, thursdayHours, fridayHours, saturdayHours, sundayHours);
-        // let education = e.target[0].value.trim();
-        // let specialization = e.target[1].value.trim();
-        // let describe = e.target[2].value.trim();
-        // let educDocuments = e.target[3].value.trim();
-        // let hospitalName = e.target[4].value.trim();
-        // let hospitalAddres = e.target[5].value.trim();
-        // let hospitalTown = e.target[6].value.trim();
-        // handleValidation(education, specialization, describe, educDocuments, hospitalName, hospitalAddres, hospitalTown);
 
         if (!formIsValid || !hourFormIsValid) {
             return;

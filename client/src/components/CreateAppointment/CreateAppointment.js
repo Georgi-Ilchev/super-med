@@ -25,6 +25,12 @@ const CreateAppointment = () => {
     const [error, setError] = useState('');
     const [showAlert, setAlert] = useState(false);
 
+    useEffect(() => {
+        if (currentUser === null) {
+            navigate('/');
+        }
+    }, []);
+
     const clickedDate = useCallback((value) => {
         const rawDate = value;
         setDate(prevState => value.format('YYYY-MM-DD'));
@@ -143,7 +149,6 @@ const CreateAppointment = () => {
             setDoctorHours(prevState => doctor.data().workSchedule);
         })();
     }, [params.doctorId]);
-
 
     function clickedHour(el) {
         setHour(prevState => el.target.value);
