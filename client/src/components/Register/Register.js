@@ -82,7 +82,12 @@ const Register = () => {
 		try {
 			const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
 
-			await setDoc(doc(db, 'users', userCredentials.user.uid), { email });
+			await setDoc(doc(db, 'users', userCredentials.user.uid), {
+				email,
+				role: {
+					client: true,
+				}
+			});
 
 			navigate('/');
 
@@ -132,7 +137,7 @@ const Register = () => {
 									<input
 										type="password"
 										className="form-control"
-										id="exampleInputPassword1"
+										id="exampleInputPassword2"
 										name="re-password"
 										placeholder="Password"
 										onChange={(event) => setRePass(event.target.value.trim())}

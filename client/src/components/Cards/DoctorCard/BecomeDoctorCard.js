@@ -3,7 +3,7 @@ import { db } from '../../../utils/firebase.js';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import { Card, ListGroup, ListGroupItem, Button, ButtonGroup } from 'react-bootstrap';
-import { collection, doc, getDocs, query, setDoc, where, deleteDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where, deleteDoc, updateDoc } from 'firebase/firestore';
 
 const BecomeDoctorCard = ({
     data,
@@ -33,6 +33,12 @@ const BecomeDoctorCard = ({
                 hospitalName: data.hospitalName,
                 hospitalAddres: data.hospitalAddres,
                 workSchedule: data.workSchedule,
+            });
+
+            await updateDoc(doc(db, 'users', id), {
+                role: {
+                    doctor: true
+                }
             });
             console.log('created');
 

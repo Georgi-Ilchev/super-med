@@ -36,22 +36,22 @@ const EditProfile = () => {
         setAddressError('');
         formIsValid = true;
 
-        if (!fullName.match(/^([a-zA-Z]){2,25} ([a-zA-Z]){2,25}$/)) {
+        if (!fullName?.match(/^([a-zA-Z]){2,25} ([a-zA-Z]){2,25}$/) || fullName === undefined) {
             setFullNameError('Name must contains only letters between 2 and 25');
             formIsValid = false;
         }
 
-        if (age < 18 || age >= 100) {
+        if (age < 18 || age >= 100 || age === undefined) {
             setAgeError('Age must be between 18 and 100');
             formIsValid = false;
         }
 
-        if (!phoneNumber.match(/^[0-9]{10}$/)) {
+        if (!phoneNumber?.match(/^[0-9]{10}$/) || phoneNumber === undefined) {
             setPhoneNumberError('Phone number must contains exactly 10 numbers');
             formIsValid = false;
         }
 
-        if (address.length <= 5) {
+        if (address?.length <= 5 || address === undefined) {
             setAddressError('Address must be not empty');
             formIsValid = false;
         }

@@ -40,9 +40,7 @@ const AccountPage = () => {
         if (userData) {
             // console.log(Object.keys(userData).length);
             let dataLength = Object.keys(userData).length;
-
-            if (dataLength <= 1) {
-                console.log('accounta e ne pulen');
+            if (dataLength <= 2) {
                 setFlag(false);
                 setShowBecomeDoctorBtn(false);
             } else if (dataLength >= 6) {
@@ -58,7 +56,6 @@ const AccountPage = () => {
             //   console.log(key);
             // });
         }
-
     }, [userData])
 
     return (
@@ -144,16 +141,19 @@ const AccountPage = () => {
                                         style={style.cardButton}
                                     >Edit</Link>
 
-                                    {flag
-                                        ? <a className="btn btn-dark" style={{ marginRight: '15px', cursor: 'not-allowed' }}>Loading...</a>
-                                        : showBecomeDoctorBtn
-                                            ? <Link
-                                                className="btn btn-dark md-2"
-                                                to={`/account/${uid}/becomedoctor`}
-                                                state={{ userData }}
-                                            >Become a doctor
-                                            </Link>
-                                            : <a className="btn btn-dark" style={{ marginRight: '15px', cursor: 'not-allowed' }}>You should set your information!</a>
+                                    {userData?.role.client === true
+                                        ? flag
+                                            ? <a className="btn btn-dark" style={{ marginRight: '15px', cursor: 'not-allowed' }}>Loading...</a>
+                                            : showBecomeDoctorBtn
+                                                ? <Link
+                                                    className="btn btn-dark md-2"
+                                                    to={`/account/${uid}/becomedoctor`}
+                                                    state={{ userData }}
+                                                >Become a doctor
+                                                </Link>
+                                                : <a className="btn btn-dark" style={{ marginRight: '15px', cursor: 'not-allowed' }}>You should set your information!</a>
+
+                                        : null
                                     }
                                 </div>
                             </div>
