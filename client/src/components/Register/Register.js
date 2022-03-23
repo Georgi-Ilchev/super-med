@@ -84,9 +84,7 @@ const Register = () => {
 
 			await setDoc(doc(db, 'users', userCredentials.user.uid), {
 				email,
-				role: {
-					client: true,
-				}
+				role: 'client'
 			});
 
 			navigate('/');

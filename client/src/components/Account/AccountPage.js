@@ -47,14 +47,6 @@ const AccountPage = () => {
                 setFlag(false);
                 setShowBecomeDoctorBtn(true);
             }
-
-            // Object.values(userData).map((value, key) => {
-            //   if (value == null) {
-            //     console.log(`value is null - ${key}`);
-            //   }
-            //   console.log(value);
-            //   console.log(key);
-            // });
         }
     }, [userData])
 
@@ -141,7 +133,7 @@ const AccountPage = () => {
                                         style={style.cardButton}
                                     >Edit</Link>
 
-                                    {userData?.role.client === true
+                                    {userData?.role === 'client'
                                         ? flag
                                             ? <a className="btn btn-dark" style={{ marginRight: '15px', cursor: 'not-allowed' }}>Loading...</a>
                                             : showBecomeDoctorBtn

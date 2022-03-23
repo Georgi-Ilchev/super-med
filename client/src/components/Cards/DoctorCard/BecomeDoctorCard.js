@@ -36,9 +36,7 @@ const BecomeDoctorCard = ({
             });
 
             await updateDoc(doc(db, 'users', id), {
-                role: {
-                    doctor: true
-                }
+                role: 'doctor'
             });
             console.log('created');
 

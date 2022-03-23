@@ -1,15 +1,39 @@
 // Should be only for admins
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { collection, doc, getDocs, query, setDoc, where, getDoc } from 'firebase/firestore';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../contexts/AuthContext.js';
 import { db } from '../../../utils/firebase.js';
 import BecomeDoctorCard from "../../Cards/DoctorCard/BecomeDoctorCard.js";
 
 const BecomeDoctorRequests = () => {
+    const { currentUser } = useAuth();
+    const navigate = useNavigate();
+
     const [dataRequests, setDataRequests] = useState([]);
     const [flag, setFlag] = useState(true);
+    const [, updateState] = useState();
+
+    const forceUpdate = useCallback(() => updateState({}), []);
+    // console.log(currentUser);
+
+    useEffect(() => {
+        if (currentUser !== undefined) {
+            (async () => {
+                const ref = await doc(db, 'users', currentUser?.uid);
+                const user = await getDoc(ref);
+                if (user.data().role !== 'admin') {
+                    navigate('/');
+                }
+            })();
+        }
+    }, [currentUser])
+
+    console.log('updated');
 
     useEffect(() => {
         let isMounted = true;
+
         (async () => {
             const requests = collection(db, 'doctor-requests');
             const q = query(requests);
@@ -22,11 +46,13 @@ const BecomeDoctorRequests = () => {
                 })));
 
                 setFlag(false);
+                forceUpdate();
             }
         })();
-        
+
+
         return () => { isMounted = false };
-    }, [dataRequests]);
+    }, []);
 
     return (
         <section>
