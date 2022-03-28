@@ -149,7 +149,7 @@ const BecomeDoctor = () => {
 
     // call force-update when image is uploaded last in the form. (need re-render component, to get image url if it uploaded last);
     const forceUpdate = useCallback(() => updateState({}), []);
-
+    
     useEffect(() => {
         if (location.state == null) {
             navigate('/');
@@ -203,6 +203,10 @@ const BecomeDoctor = () => {
             return;
         }
 
+        if (url === null) {
+            return;
+        }
+
         try {
             await setDoc(doc(db, "doctor-requests", currentUser?.uid), {
                 uid: currentUser?.uid,
@@ -210,6 +214,7 @@ const BecomeDoctor = () => {
                 specialization,
                 describe,
                 educationUrl: url,
+                imageUrl: userData.imageUrl,
                 hospitalName,
                 hospitalAddres,
                 hospitalTown,

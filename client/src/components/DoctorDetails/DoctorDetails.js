@@ -31,7 +31,7 @@ const DoctorDetails = () => {
         <div className="card mb-3" style={{ maxWidth: '70%', margin: 'auto', border: 'none', padding: '10px', marginTop: '8rem' }}>
             <div className="row g-0">
                 <div className="col-md-4">
-                    <img src="..." className="img-fluid rounded-start" alt="..." />
+                    <img src={doctorData.image} className="img-fluid rounded-start" alt="..." />
                 </div>
                 <div className="col-md-8">
                     <div className="card-body">

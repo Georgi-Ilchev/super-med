@@ -178,7 +178,7 @@ const CreateAppointment = () => {
 
             <div style={style.appointmentInfo}>
                 <div className="card mb-3">
-                    <img src="..." className="card-img-top" alt="..." />
+                    <img src={doctorData?.image} className="card-img-top" alt="..." width="100" height="250" />
                     <div className="card-body">
                         <h5 className="card-title text-center">Make your appointment with {doctorData?.fullName}</h5>
                         <hr />

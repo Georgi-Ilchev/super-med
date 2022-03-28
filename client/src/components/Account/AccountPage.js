@@ -38,7 +38,8 @@ const AccountPage = () => {
 
     useEffect(() => {
         if (userData) {
-            // console.log(Object.keys(userData).length);
+            console.log(Object.keys(userData).length);
+            console.log(userData?.role);
             let dataLength = Object.keys(userData).length;
             if (dataLength <= 2) {
                 setFlag(false);
@@ -61,7 +62,7 @@ const AccountPage = () => {
                     <div className="card-body">
                         <div className="d-flex flex-column align-items-center text-center">
                             <img
-                                src={defaultAvatar} alt="Admin" className="rounded-circle"
+                                src={userData?.imageUrl ? userData.imageUrl : defaultAvatar} alt="Admin" className="rounded-circle"
                                 width="150"
                             />
                             <div className="mt-3">

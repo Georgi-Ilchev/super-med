@@ -103,18 +103,18 @@ const Categories = () => {
 
             <ul>
                 {/* <div className="row offset-1"> */}
-
-                {dataDoctors.length > 0
-                    ? dataDoctors.map(x =>
-                        <DoctorCard key={x.id} id={x.id} data={x.data}  >
-                            {/* {console.log(x)} */}
-                        </DoctorCard>)
-                    : flag ? <p className="no-doctors-message">Loading...</p>
-                        : <div>
-                            <p className="no-doctors-message">There are no doctors added in this field yet</p>
-                        </div>}
-                {/* </div> */}
-
+                <div className="row">
+                    {dataDoctors.length > 0
+                        ? dataDoctors.map(x =>
+                            <DoctorCard key={x.id} id={x.id} data={x.data}  >
+                                {/* {console.log(x)} */}
+                            </DoctorCard>)
+                        : flag ? <p className="no-doctors-message">Loading...</p>
+                            : <div>
+                                <p className="no-doctors-message">There are no doctors added in this field yet</p>
+                            </div>}
+                    {/* </div> */}
+                </div>
             </ul>
 
 

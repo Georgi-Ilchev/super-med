@@ -3,14 +3,21 @@ import { useAuth } from '../../contexts/AuthContext.js';
 import { useEffect, useState } from 'react';
 import { collection, doc, getDoc, query, where, documentId, getDocs, list, orderBy } from 'firebase/firestore';
 import { db } from '../../utils/firebase.js';
+import { useNavigate } from 'react-router-dom';
 
 const Appointments = () => {
     const { currentUser } = useAuth();
+    const navigate = useNavigate();
     const [appointments, setAppointments] = useState(null);
     const [flag, setFlag] = useState(true);
 
     useEffect(() => {
         let isMounted = true;
+
+        if (currentUser === null) {
+            navigate('/');
+        }
+
         (async () => {
             if (currentUser) {
                 const appointments = collection(db, 'appointments');

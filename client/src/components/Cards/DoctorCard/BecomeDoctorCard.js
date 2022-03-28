@@ -10,7 +10,7 @@ const BecomeDoctorCard = ({
     id
 }) => {
     const navigate = useNavigate();
-
+    console.log(data);
 
     const onDeclineHandler = useCallback(async (e) => {
         if (id != undefined) {
@@ -33,6 +33,7 @@ const BecomeDoctorCard = ({
                 hospitalName: data.hospitalName,
                 hospitalAddres: data.hospitalAddres,
                 workSchedule: data.workSchedule,
+                image: data.imageUrl,
             });
 
             await updateDoc(doc(db, 'users', id), {
@@ -46,7 +47,7 @@ const BecomeDoctorCard = ({
 
     return (
         <div className="card" style={{ width: "18rem" }}>
-            <img src="..." className="card-img-top" alt="..." />
+            <img src={data.imageUrl} className="card-img-top" alt="..." />
             <div className="card-body">
                 <h5 className="card-title">{data.userName}</h5>
                 <p className="card-text">{data.describe}</p>

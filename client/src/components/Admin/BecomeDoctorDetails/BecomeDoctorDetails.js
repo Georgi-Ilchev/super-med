@@ -21,6 +21,7 @@ const BecomeDoctorDetails = () => {
         })();
     }, []);
 
+
     return (
         <div className="card mb-3" style={{ maxWidth: '70%', margin: 'auto', border: 'none', padding: '10px', marginTop: '3rem' }}>
             <div className="row g-0">
