@@ -2,7 +2,6 @@ import { db } from "../../../utils/firebase.js";
 import { useCallback } from "react";
 import { doc, deleteDoc } from 'firebase/firestore';
 
-
 const AppointmentTable = ({
     data
 }) => {

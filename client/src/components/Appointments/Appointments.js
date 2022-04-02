@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { collection, doc, getDoc, query, where, documentId, getDocs, list, orderBy } from 'firebase/firestore';
 import { db } from '../../utils/firebase.js';
 import { useNavigate } from 'react-router-dom';
+import './Appointments.css';
 
 const Appointments = () => {
     const { currentUser } = useAuth();
@@ -64,7 +65,7 @@ const Appointments = () => {
     }
 
     return (
-        <section>
+        <section className='user-appointment-section'>
             <h1 style={style.appointmentTable} className='text-center'>Your Appointments</h1>
             <div>
                 {appointments?.length > 0
