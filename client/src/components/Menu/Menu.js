@@ -2,9 +2,24 @@ import { Link } from 'react-router-dom';
 import { Navbar, NavDropdown, Nav, Container } from 'react-bootstrap';
 import { useAuth } from "../../contexts/AuthContext.js";
 import navbarlogo from "../../assets/images/navbarlogo.png";
+import { useEffect, useState } from 'react';
+import { query, where, collection, docs, getDocs } from 'firebase/firestore';
+import { db } from '../../utils/firebase.js';
 
 const Menu = () => {
     const { currentUser } = useAuth();
+    const [userRole, setUserRole] = useState();
+
+    useEffect(() => {
+        (async () => {
+            if (currentUser) {
+                const users = collection(db, 'users');
+                const q = query(users, where("email", "==", currentUser?.email));
+                const user = await getDocs(q);
+                user.docs.map(x => setUserRole(prevState => x.data().role));
+            }
+        })();
+    }, [currentUser])
 
     return (
         <Navbar className='position-relative' collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
@@ -26,7 +41,10 @@ const Menu = () => {
                         </NavDropdown>
 
                         {/* Should be only for admins! */}
-                        <Nav.Link as={Link} to="/admin/requests/becomeadoctor">Requests</Nav.Link>
+                        {userRole === 'admin'
+                            ? <Nav.Link as={Link} to="/admin/requests/becomeadoctor">Requests</Nav.Link>
+                            : null}
+
                         {/* Should be only for admins! */}
                     </Nav>
                     <Nav>

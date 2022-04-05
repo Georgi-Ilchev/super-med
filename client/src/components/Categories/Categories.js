@@ -101,7 +101,7 @@ const Categories = () => {
             </div> */}
             <hr />
 
-            <ul>
+            <ul style={style.categoriesUl}>
                 {/* <div className="row offset-1"> */}
                 <div className="row">
                     {dataDoctors.length > 0
@@ -124,3 +124,8 @@ const Categories = () => {
 };
 
 export default Categories;
+
+const style = {
+    categoriesUl: {
+    }
+}
