@@ -1,7 +1,7 @@
 import AppointmentTable from './AppointmentTable/AppointmentTable.js';
 import { useAuth } from '../../contexts/AuthContext.js';
 import { useEffect, useState } from 'react';
-import { collection, doc, getDoc, query, where, documentId, getDocs, list, orderBy } from 'firebase/firestore';
+import { collection, doc, getDoc, query, where, documentId, getDocs, list, orderBy, updateDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebase.js';
 import { useNavigate } from 'react-router-dom';
 import './Appointments.css';
@@ -19,6 +19,11 @@ const Appointments = () => {
             navigate('/');
         }
 
+        // await updateDoc(doc(db, 'appointments', id), {
+        //     status: 'inactive'
+        // });
+        const currentDate = new Date();
+
         (async () => {
             if (currentUser) {
                 const appointments = collection(db, 'appointments');
@@ -28,6 +33,22 @@ const Appointments = () => {
                     orderBy("date", "asc"),
                     orderBy("hour", "asc"));
                 const userAppointments = await getDocs(q);
+
+                userAppointments.docs.map(x => {
+                    const newDate = new Date(x.data().date);
+                    const [hour, minute] = x.data().hour.split(':');
+
+                    newDate.setHours(Number(hour));
+                    newDate.setMinutes(Number(minute));
+                    // console.log(newDate);
+                    // console.log(currentDate);
+                    if (newDate.getTime() < currentDate) {
+                        updateDoc(doc(db, 'appointments', x.id), {
+                            status: 'inactive'
+                        });
+                        // should be deleted!
+                    }
+                })
 
                 if (isMounted) {
                     setAppointments(userAppointments.docs.map(x => ({
@@ -77,8 +98,8 @@ const Appointments = () => {
                         {/* <button type="button" className="btn btn-light" onClick={seeArchiveAppointments}>Archive</button> */}
                     </div>
                     : flag
-                        ? <p className="no-doctors-message">Loading...</p>
-                        : <p className="no-doctors-message">You dont have appointments yet!</p>}
+                        ? <p className="appointments-loading-message">Loading...</p>
+                        : <p className="no-appointments-message">You dont have appointments yet!</p>}
 
 
             </div>
@@ -93,6 +114,7 @@ const style = {
     appointmentTable: {
         marginTop: '30px',
         marginBottom: '30px',
+        color: 'bisque'
     }
 }
 
