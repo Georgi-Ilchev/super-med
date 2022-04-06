@@ -101,9 +101,9 @@ const Categories = () => {
             </div> */}
             <hr />
 
-            <ul style={style.categoriesUl}>
+            <ul>
                 {/* <div className="row offset-1"> */}
-                <div className="row">
+                <div className="row" style={style.categoriesUl}>
                     {dataDoctors.length > 0
                         ? dataDoctors.map(x =>
                             <DoctorCard key={x.id} id={x.id} data={x.data}  >
@@ -127,5 +127,6 @@ export default Categories;
 
 const style = {
     categoriesUl: {
+        margin: '0px'
     }
 }

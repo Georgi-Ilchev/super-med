@@ -30,8 +30,8 @@ const DoctorCard = ({
         //     </Card.Body>
         // </Card >
 
-        <div className="col-sm-3">
-            <div className="card" style={{ width: '18rem' }}>
+        <div className="col-sm-3" style={style.doctorCardDiv}>
+            <div className="card" style={{ width: '20rem', height: '32rem' }}>
                 <img className="card-img-top" src={data.image} alt="Card image cap" />
                 <div className="card-body">
                     <h5 className="card-title">Dr. {data.fullName}</h5>
@@ -65,5 +65,8 @@ const style = {
         // borderRadius: 55,
         width: '150px',
         height: '150px'
+    },
+    doctorCardDiv: {
+        padding: '15px 0px 15px 0px'
     }
 }
