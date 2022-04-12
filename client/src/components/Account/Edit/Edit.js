@@ -151,7 +151,7 @@ const EditProfile = () => {
 
     useEffect(() => {
         (async () => {
-            if (!currentUser.uid) {
+            if (!currentUser?.uid) {
                 return;
             }
 

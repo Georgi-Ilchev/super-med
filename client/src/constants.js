@@ -148,10 +148,13 @@ const WorkedDays = [
     "Sunday",
 ]
 
+const CardsPerPage = 4;
+
 export {
     Categories,
     WeeklyOurs,
     WeeklyHours,
     WorkedDays,
     Towns,
+    CardsPerPage
 }
