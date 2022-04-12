@@ -78,6 +78,7 @@ const Categories = () => {
     useEffect(() => {
         const pageCount = dataDoctors ? Math.ceil(dataDoctors.length / CardsPerPage) : 0;
 
+        setCurrentPage(prevState => 1);
         setPages(prevState => range(pageCount, 1));
         // setPages(prevState => [...Array(pageCount).keys()]);
 
