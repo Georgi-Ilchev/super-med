@@ -141,7 +141,7 @@ const Categories = () => {
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 setPaginatedCards={setPaginatedCards}
-                dataDoctors={dataDoctors}
+                data={dataDoctors}
             >
             </Pagination>
         </section>

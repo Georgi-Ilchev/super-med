@@ -10,7 +10,7 @@ const Pagination = (props) => {
     const pagination = (pageNo) => {
         props.setCurrentPage(pageNo);
         const startIndex = (pageNo - 1) * CardsPerPage;
-        const paginatedCards = _(props.dataDoctors).slice(startIndex).take(CardsPerPage).value();
+        const paginatedCards = _(props.data).slice(startIndex).take(CardsPerPage).value();
         props.setPaginatedCards(paginatedCards);
     }
 
@@ -22,7 +22,7 @@ const Pagination = (props) => {
             prevState - 1
         );
         const startIndex = (props.currentPage - 2) * CardsPerPage;
-        const paginatedCards = _(props.dataDoctors).slice(startIndex).take(CardsPerPage).value();
+        const paginatedCards = _(props.data).slice(startIndex).take(CardsPerPage).value();
         props.setPaginatedCards(paginatedCards);
     }
 
@@ -36,7 +36,7 @@ const Pagination = (props) => {
         );
 
         const startIndex = (props.currentPage) * CardsPerPage;
-        const paginatedCards = _(props.dataDoctors).slice(startIndex).take(CardsPerPage).value();
+        const paginatedCards = _(props.data).slice(startIndex).take(CardsPerPage).value();
         props.setPaginatedCards(paginatedCards);
     }
 
