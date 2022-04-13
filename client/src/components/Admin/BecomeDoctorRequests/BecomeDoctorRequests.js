@@ -79,6 +79,7 @@ const BecomeDoctorRequests = () => {
 
     return (
         <section>
+            <h1 style={style.sentRequestsHeader} className='text-center'>Sent requests</h1>
             <ul>
                 <div className="row" style={style.becomeDoctorUl}>
                     {paginatedCards?.length > 0
@@ -115,5 +116,10 @@ const style = {
         fontSize: '50px',
         marginTop: '10rem',
         textAlign: 'center',
+    },
+    sentRequestsHeader: {
+        marginTop: '30px',
+        marginBottom: '30px',
+        color: 'black'
     }
 }

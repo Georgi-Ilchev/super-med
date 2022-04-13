@@ -87,7 +87,7 @@ const Appointments = () => {
 
     return (
         <section className='user-appointment-section'>
-            <h1 style={style.appointmentTable} className='text-center'>Your Appointments</h1>
+            <h1 style={style.appointmentHeader} className='text-center'>Your Appointments</h1>
             <div>
                 {appointments?.length > 0
                     ?
@@ -111,7 +111,7 @@ const Appointments = () => {
 export default Appointments;
 
 const style = {
-    appointmentTable: {
+    appointmentHeader: {
         marginTop: '30px',
         marginBottom: '30px',
         color: 'bisque'
