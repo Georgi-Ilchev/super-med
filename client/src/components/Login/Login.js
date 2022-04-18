@@ -23,9 +23,6 @@ const Login = () => {
         e.preventDefault();
         handleValidation();
 
-        console.log(password);
-        console.log(email);
-
         try {
             await signInWithEmailAndPassword(auth, email, password);
             navigate("/");

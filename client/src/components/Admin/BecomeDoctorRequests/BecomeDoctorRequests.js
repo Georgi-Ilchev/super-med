@@ -55,7 +55,7 @@ const BecomeDoctorRequests = () => {
                 })));
 
                 setFlag(false);
-                forceUpdate();
+                // forceUpdate();
             }
         })();
 

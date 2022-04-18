@@ -9,6 +9,7 @@ import { db } from '../../utils/firebase.js';
 const Menu = () => {
     const { currentUser } = useAuth();
     const [userRole, setUserRole] = useState();
+    const [showEditLink, setShowEditLink] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -17,6 +18,7 @@ const Menu = () => {
                 const q = query(users, where("email", "==", currentUser?.email));
                 const user = await getDocs(q);
                 user.docs.map(x => setUserRole(prevState => x.data().role));
+                setShowEditLink(true);
             }
         })();
     }, [currentUser])
@@ -48,11 +50,26 @@ const Menu = () => {
                         {/* Should be only for admins! */}
                     </Nav>
                     <Nav>
-                        {currentUser ? <>
+                        {/* {currentUser ? <>
                             <Navbar.Text >
                                 Wellcome, {currentUser?.email}
                             </Navbar.Text>
                             <Nav.Link as={Link} to={`/account/${currentUser?.uid}`}>Account</Nav.Link>
+                            <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
+                        </> : null
+                        } */}
+
+                        {currentUser ? <>
+                            <Navbar.Text >
+                                Wellcome, {currentUser?.email}
+                            </Navbar.Text>
+                            {showEditLink
+                                ? userRole === 'client'
+                                    ? <Nav.Link as={Link} to={`/account/${currentUser?.uid}`}>Account</Nav.Link>
+                                    : <Nav.Link as={Link} to={`/doctor-account/${currentUser?.uid}`}>Account</Nav.Link>
+                                : null
+                            }
+
                             <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
                         </> : null
                         }

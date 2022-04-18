@@ -10,7 +10,9 @@ import Logout from './components/Logout/Logout.js';
 import Register from './components/Register/Register.js';
 import NotFound from './components/NotFound/NotFound.js';
 import AccountPage from './components/Account/AccountPage';
+import DoctorAccountPage from './components/Account/DoctorAccountPage.js';
 import EditProfile from './components/Account/Edit/Edit';
+import DoctorEditProfile from './components/Account/Edit/DoctorEdit.js';
 import BecomeDoctor from './components/Account/BecomeDoctor/BecomeDoctor.js';
 import Categories from './components/Categories/Categories.js';
 import CreateAppointment from './components/CreateAppointment/CreateAppointment.js';
@@ -42,7 +44,9 @@ function App() {
           <Route path="/doctors/:doctorId/createappointment" element={<CreateAppointment />} />
           <Route path="/doctors/info" element={<DoctorsInfo />} />
           <Route path="/account/:uid" element={<AccountPage />} />
+          <Route path="/doctor-account/:uid" element={<DoctorAccountPage />} />
           <Route path="/account/:uid/edit" element={<EditProfile />} />
+          <Route path="/doctor-account/:uid/edit" element={< DoctorEditProfile />} />
           <Route path="/account/:uid/becomedoctor" element={<BecomeDoctor />} />
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/appointmentss" element={<Appointmentss />} />

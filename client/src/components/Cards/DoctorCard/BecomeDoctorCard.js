@@ -10,12 +10,12 @@ const BecomeDoctorCard = ({
     id
 }) => {
     const navigate = useNavigate();
-    console.log(data);
+    // console.log(data);
 
     const onDeclineHandler = useCallback(async (e) => {
         if (id != undefined) {
             await deleteDoc(doc(db, "doctor-requests", id));
-            console.log('deteled');
+            console.log('deleted');
         }
     }, []);
 

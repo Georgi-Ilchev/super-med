@@ -7,12 +7,11 @@ import { db } from '../../utils/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import defaultAvatar from '../../assets/images/avatar.png';
 
-const AccountPage = () => {
+const DoctorAccountPage = () => {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
     const [userData, setUserData] = useState(null);
-    const [showBecomeDoctorBtn, setShowBecomeDoctorBtn] = useState(false);
-    const [flag, setFlag] = useState(true);
+    const [doctorData, setDoctorData] = useState(null);
 
     const uid = currentUser?.uid;
 
@@ -34,7 +33,7 @@ const AccountPage = () => {
 
             setUserData(prevState => user.data());
 
-            if (user.data().role !== 'client') {
+            if (user.data().role !== 'doctor') {
                 navigate('/');
             }
         })();
@@ -42,18 +41,17 @@ const AccountPage = () => {
 
     useEffect(() => {
         if (userData) {
-            console.log(Object.keys(userData).length);
-            console.log(userData?.role);
-            let dataLength = Object.keys(userData).length;
-            if (dataLength <= 2) {
-                setFlag(false);
-                setShowBecomeDoctorBtn(false);
-            } else if (dataLength >= 6) {
-                setFlag(false);
-                setShowBecomeDoctorBtn(true);
-            }
+            (async () => {
+                if (userData?.role === 'doctor') {
+                    const ref = await doc(db, 'doctors', currentUser.uid);
+                    const doctor = await getDoc(ref);
+                    setDoctorData(prevState => doctor.data());
+                }
+            })();
         }
     }, [userData])
+
+    console.log(doctorData);
 
     return (
         <div className="container mt-5">
@@ -66,11 +64,12 @@ const AccountPage = () => {
                     <div className="card-body">
                         <div className="d-flex flex-column align-items-center text-center">
                             <img
-                                src={userData?.imageUrl ? userData.imageUrl : defaultAvatar} alt="Admin" className="rounded-circle"
+                                src={doctorData?.image ? doctorData.image : defaultAvatar} alt="Admin" className="rounded-circle"
                                 width="150"
                             />
                             <div className="mt-3">
-                                <h4>{userData?.fullName}</h4>
+                                <h4>{doctorData?.fullName}</h4>
+                                <h6>{doctorData?.type}</h6>
                             </div>
                         </div>
                     </div>
@@ -81,7 +80,7 @@ const AccountPage = () => {
                                     <h6 className="mb-0">Full Name</h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {userData?.fullName}
+                                    {doctorData?.fullName}
                                 </div>
                             </div>
                             <hr />
@@ -90,7 +89,25 @@ const AccountPage = () => {
                                     <h6 className="mb-0">Age</h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {userData?.age}
+                                    {doctorData?.age}
+                                </div>
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h6 className="mb-0">Description</h6>
+                                </div>
+                                <div className="col-sm-9 text-secondary">
+                                    {doctorData?.description}
+                                </div>
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h6 className="mb-0">Graduated at</h6>
+                                </div>
+                                <div className="col-sm-9 text-secondary">
+                                    {doctorData?.education}
                                 </div>
                             </div>
                             <hr />
@@ -99,7 +116,7 @@ const AccountPage = () => {
                                     <h6 className="mb-0">Email</h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {userData?.email}
+                                    {doctorData?.email}
                                 </div>
                             </div>
                             <hr />
@@ -108,7 +125,7 @@ const AccountPage = () => {
                                     <h6 className="mb-0">Phone</h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {userData?.phoneNumber}
+                                    {doctorData?.phone}
                                 </div>
                             </div>
                             <hr />
@@ -123,10 +140,28 @@ const AccountPage = () => {
                             <hr />
                             <div className="row">
                                 <div className="col-sm-3">
-                                    <h6 className="mb-0">Address</h6>
+                                    <h6 className="mb-0">Hospital name</h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {userData?.address}
+                                    {doctorData?.hospitalName}
+                                </div>
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h6 className="mb-0">Hospital address</h6>
+                                </div>
+                                <div className="col-sm-9 text-secondary">
+                                    {doctorData?.hospitalAddres}
+                                </div>
+                            </div>
+                            <hr />
+                            <div className="row">
+                                <div className="col-sm-3">
+                                    <h6 className="mb-0">Hospital town</h6>
+                                </div>
+                                <div className="col-sm-9 text-secondary">
+                                    {doctorData?.town}
                                 </div>
                             </div>
                             <hr />
@@ -134,24 +169,9 @@ const AccountPage = () => {
                                 <div className="col-sm-12">
                                     <Link
                                         className="btn btn-info "
-                                        to={`/account/${uid}/edit`}
+                                        to={`/doctor-account/${uid}/edit`}
                                         style={style.cardButton}
                                     >Edit</Link>
-
-                                    {userData?.role === 'client'
-                                        ? flag
-                                            ? <a className="btn btn-dark" style={{ marginRight: '15px', cursor: 'not-allowed' }}>Loading...</a>
-                                            : showBecomeDoctorBtn
-                                                ? <Link
-                                                    className="btn btn-dark md-2"
-                                                    to={`/account/${uid}/becomedoctor`}
-                                                    state={{ userData }}
-                                                >Become a doctor
-                                                </Link>
-                                                : <a className="btn btn-dark" style={{ marginRight: '15px', cursor: 'not-allowed' }}>You should set your information!</a>
-
-                                        : null
-                                    }
                                 </div>
                             </div>
                         </div>
@@ -162,7 +182,7 @@ const AccountPage = () => {
     );
 };
 
-export default AccountPage;
+export default DoctorAccountPage;
 
 const style = {
     cardButton: {
