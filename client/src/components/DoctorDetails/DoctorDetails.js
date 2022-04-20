@@ -28,7 +28,7 @@ const DoctorDetails = () => {
     }, [params.doctorId]);
 
     return (
-        <div className="card mb-3" style={{ maxWidth: '70%', margin: 'auto', border: 'none', padding: '10px', marginTop: '8rem' }}>
+        <div className="card mb-3" style={{ maxWidth: '70%', margin: 'auto', border: 'none', padding: '10px', marginTop: '8rem', boxShadow: '0px 0px 30px #888888' }}>
             <div className="row g-0">
                 <div className="col-md-4">
                     <img src={doctorData?.image} className="img-fluid rounded-start" alt="..." />
@@ -39,9 +39,10 @@ const DoctorDetails = () => {
                         <p className="card-text" style={{ textAlign: 'center' }}>{doctorData?.type} - {doctorData?.town}</p>
                         <hr />
                         <p className="card-text"><span className="doctor-details-span">Description:</span> {doctorData?.description}</p>
+                        <p className="card-text"><span className="doctor-details-span">Graduated at:</span> {doctorData?.education}</p>
                         <p className="card-text"><span className="doctor-details-span">Age:</span> {doctorData?.age}</p>
                         <p className="card-text"><span className="doctor-details-span">Hospital:</span> {doctorData?.hospitalName}</p>
-                        <p className="card-text"><span className="doctor-details-span">Addres:</span> {doctorData?.hospitalAddres}</p>
+                        <p className="card-text"><span className="doctor-details-span">Addres:</span> {doctorData?.hospitalAddress}</p>
                         <p className="card-text"><span className="doctor-details-span">Email:</span> {doctorData?.email}</p>
                         <p className="card-text"><span className="doctor-details-span">Phone:</span> {doctorData?.phone}</p>
                         <hr />

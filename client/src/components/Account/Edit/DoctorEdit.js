@@ -1,6 +1,7 @@
 import { db, storage } from '../../../utils/firebase';
 import AccountModal from '../../Modal/AccountModal/AccountModal.js';
 import { useAuth } from '../../../contexts/AuthContext.js';
+import { Towns } from '../../../constants.js';
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -14,24 +15,31 @@ const DoctorEditProfile = () => {
     const { currentUser } = useAuth();
     const navigate = useNavigate();
 
-    const [userData, setUserData] = useState(null);
+    const [doctorData, setDoctorData] = useState(null);
 
-    const [pin, setPin] = useState('');
-    const [age, setAge] = useState('');
-    const [address, setAddress] = useState('');
     const [fullName, setFullName] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [age, setAge] = useState('');
+    const [description, setDescription] = useState('');
+    const [education, setEducation] = useState('');
+    const [phone, setPhone] = useState('');
+    const [hospitalName, setHospitalName] = useState('');
+    const [hospitalAddress, setHospitalAddress] = useState('');
+    const [hospitalTown, setHospitalTown] = useState('');
     const [image, setImage] = useState('');
+
+    const [fullNameError, setFullNameError] = useState('');
+    const [ageError, setAgeError] = useState('');
+    const [descriptionError, setDescriptionError] = useState('');
+    const [educationError, setEducationError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const [hospitalNameError, setHospitalNameError] = useState('');
+    const [hospitalAddressError, setHospitalAddressError] = useState('');
+    const [hospitalTownError, setHospitalTownError] = useState('');
+    const [imageError, setImageError] = useState('');
 
     const [url, setUrl] = useState('');
     const [progress, setProgress] = useState(0);
     const [, updateState] = useState();
-
-    const [ageError, setAgeError] = useState('');
-    const [addressError, setAddressError] = useState('');
-    const [fullNameError, setFullNameError] = useState('');
-    const [phoneNumberError, setPhoneNumberError] = useState('');
-    const [imageError, setImageError] = useState('');
 
     const [modalInfo, setModalInfo] = useState('');
     const [modalShow, setModalShow] = useState(false);
@@ -39,8 +47,12 @@ const DoctorEditProfile = () => {
     const handleValidation = () => {
         setFullNameError('');
         setAgeError('');
-        setPhoneNumberError('');
-        setAddressError('');
+        setDescriptionError('');
+        setEducationError('');
+        setPhoneError('');
+        setHospitalNameError('');
+        setHospitalAddressError('');
+        setHospitalTownError('');
         setImageError('');
         formIsValid = true;
 
@@ -54,13 +66,34 @@ const DoctorEditProfile = () => {
             formIsValid = false;
         }
 
-        if (!phoneNumber?.match(/^[0-9]{10}$/) || phoneNumber === undefined) {
-            setPhoneNumberError('Phone number must contains exactly 10 numbers');
+        if (education.length <= 0) {
+            setEducationError('Education must be not empty!');
             formIsValid = false;
         }
 
-        if (address?.length <= 5 || address === undefined) {
-            setAddressError('Address must be not empty');
+        if (description.length < 20) {
+            setDescriptionError('Description must be minimum 20 characters!');
+            formIsValid = false;
+        }
+
+        if (!phone?.match(/^[0-9]{10}$/) || phone === undefined) {
+            setPhoneError('Phone number must contains exactly 10 numbers');
+            formIsValid = false;
+        }
+
+        if (hospitalName.length < 5) {
+            setHospitalNameError('Hospital name must be at least 5 characters!');
+            formIsValid = false;
+        }
+
+        if (hospitalAddress?.length <= 5 || hospitalAddress === undefined) {
+            setHospitalAddressError('Address must be not empty');
+            formIsValid = false;
+        }
+
+        if (Towns.find((town) => hospitalTown === town)) {
+        } else {
+            setHospitalTownError('Town does not exist!');
             formIsValid = false;
         }
 
@@ -82,8 +115,8 @@ const DoctorEditProfile = () => {
         }
 
         // console.log(progress);
-        // console.log(userData.imageUrl);
-        if (!userData.imageUrl) {
+        // console.log(doctorData.image);
+        if (!doctorData.image) {
             if (progress != 100) {
                 forceUpdate();
                 return;
@@ -93,10 +126,20 @@ const DoctorEditProfile = () => {
         // console.log(image[0]);
 
         // const ref = doc(db, 'users', params?.uid);
-        const ref = doc(db, 'users', currentUser.uid);
+        const ref = doc(db, 'doctors', currentUser.uid);
 
         try {
-            await updateDoc(ref, { age, pin, address, fullName, phoneNumber, imageUrl: url });
+            await updateDoc(ref, {
+                fullName,
+                age,
+                description,
+                education,
+                phone,
+                image: url,
+                hospitalName,
+                hospitalAddress,
+                town: hospitalTown,
+            });
         } catch (error) {
             console.log(error);
             return;
@@ -104,9 +147,9 @@ const DoctorEditProfile = () => {
 
         setModalInfo('You have successfully edit your account!');
         setModalShow(true);
-        setTimeout(() => navigate(`/account/${currentUser.uid}`), 1500);
+        setTimeout(() => navigate(`/doctor-account/${currentUser.uid}`), 1500);
 
-    }, [age, pin, address, fullName, phoneNumber, image, url]);
+    }, [fullName, age, description, education, phone, hospitalName, hospitalAddress, hospitalTown, url]);
 
     const uploadFile = async (file) => {
         if (!file) {
@@ -138,16 +181,20 @@ const DoctorEditProfile = () => {
             }
         })();
 
-        if (!userData) {
+        if (!doctorData) {
             return;
         }
-        setPin(state => userData.pin);
-        setAge(state => userData.age);
-        setAddress(state => userData.address);
-        setFullName(state => userData.fullName);
-        setPhoneNumber(state => userData.phoneNumber);
-        setUrl(state => userData.imageUrl);
-    }, [userData]);
+
+        setFullName(state => doctorData.fullName);
+        setAge(state => doctorData.age);
+        setDescription(state => doctorData.description);
+        setEducation(state => doctorData.education);
+        setPhone(state => doctorData.phone);
+        setHospitalName(state => doctorData.hospitalName);
+        setHospitalAddress(state => doctorData.hospitalAddress);
+        setHospitalTown(state => doctorData.town);
+        setUrl(state => doctorData.image);
+    }, [doctorData]);
 
     useEffect(() => {
         (async () => {
@@ -155,13 +202,15 @@ const DoctorEditProfile = () => {
                 return;
             }
 
-            const ref = await doc(db, 'users', currentUser.uid);
+            const ref = await doc(db, 'doctors', currentUser.uid);
 
-            const user = await getDoc(ref);
+            const doctor = await getDoc(ref);
 
-            setUserData(prevState => user.data());
+            setDoctorData(prevState => doctor.data());
         })();
     }, [currentUser?.uid]);
+
+    console.log(education);
 
     return (
         <div>
@@ -188,7 +237,7 @@ const DoctorEditProfile = () => {
                                             name="fullName"
                                             placeholder="Pancho Villa"
                                             onChange={(event) => setFullName(event.target.value.trim())}
-                                            defaultValue={userData?.fullName}
+                                            defaultValue={doctorData?.fullName}
                                         />
                                         <small className="text-danger form-text">
                                             {fullNameError}
@@ -203,10 +252,40 @@ const DoctorEditProfile = () => {
                                             name="age"
                                             placeholder="32"
                                             onChange={(event) => setAge(event.target.value)}
-                                            defaultValue={userData?.age}
+                                            defaultValue={doctorData?.age}
                                         />
                                         <small className="text-danger form-text">
                                             {ageError}
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Description</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="description"
+                                            placeholder="description..."
+                                            onChange={(event) => setDescription(event.target.value)}
+                                            defaultValue={doctorData?.description}
+                                        />
+                                        <small className="text-danger form-text">
+                                            {descriptionError}
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Education</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="education"
+                                            placeholder="education..."
+                                            onChange={(event) => setEducation(event.target.value)}
+                                            defaultValue={doctorData?.education}
+                                        />
+                                        <small className="text-danger form-text">
+                                            {educationError}
                                         </small>
                                     </div>
 
@@ -217,16 +296,16 @@ const DoctorEditProfile = () => {
                                             className="form-control"
                                             name="phoneNumber"
                                             placeholder="08********"
-                                            onChange={(event) => setPhoneNumber(event.target.value.trim())}
-                                            defaultValue={userData?.phoneNumber}
+                                            onChange={(event) => setPhone(event.target.value.trim())}
+                                            defaultValue={doctorData?.phone}
 
                                         />
                                         <small className="text-danger form-text">
-                                            {phoneNumberError}
+                                            {phoneError}
                                         </small>
                                     </div>
 
-                                    <div className="form-group">
+                                    {/* <div className="form-group">
                                         <label>PIN(Personal Identification Number)</label>
                                         <input
                                             type="text"
@@ -234,13 +313,13 @@ const DoctorEditProfile = () => {
                                             name="PIN"
                                             placeholder="0000000000"
                                             onChange={(event) => setPin(event.target.value)}
-                                            defaultValue={userData?.pin}
+                                            defaultValue={doctorData?.pin}
 
                                         />
                                         <small className="text-danger form-text">
                                             {null}
                                         </small>
-                                    </div>
+                                    </div> */}
 
                                     <div className="form-group mb-3">
                                         <label htmlFor="formFile" className="form-label">Upload an image</label>
@@ -260,23 +339,73 @@ const DoctorEditProfile = () => {
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Address</label>
+                                        <label>Hospital Name</label>
                                         <input
                                             type="text"
                                             className="form-control"
-                                            name="PIN"
-                                            placeholder="City, Street 00"
-                                            onChange={(event) => setAddress(event.target.value.trim())}
-                                            defaultValue={userData?.address}
+                                            name="hospitalName"
+                                            placeholder="Okrujna"
+                                            onChange={(event) => setHospitalName(event.target.value.trim())}
+                                            defaultValue={doctorData?.hospitalName}
 
                                         />
                                         <small className="text-danger form-text">
-                                            {addressError}
+                                            {hospitalNameError}
+                                        </small>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Hospital Address</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="hospitalAddress"
+                                            placeholder="bul. Evlogi Georgiev 27"
+                                            onChange={(event) => setHospitalAddress(event.target.value.trim())}
+                                            defaultValue={doctorData?.hospitalAddress}
+
+                                        />
+                                        <small className="text-danger form-text">
+                                            {hospitalAddressError}
+                                        </small>
+                                    </div>
+
+                                    {/* <div className="form-group">
+                                        <label>Hospital Town</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="hospitalTown"
+                                            placeholder="Sofia"
+                                            onChange={(event) => setHospitalTown(event.target.value.trim())}
+                                            defaultValue={doctorData?.town}
+
+                                        />
+                                        <small className="text-danger form-text">
+                                            {hospitalTownError}
+                                        </small>
+                                    </div> */}
+
+                                    <div className="form-group mb-3">
+                                        <label>Hospital Town</label>
+                                        <select
+                                            className="form-select"
+                                            id="inputGroupSelect01"
+                                            defaultValue=''
+                                            name="hospitalTown"
+                                            onBlur={(event) => setHospitalTown(event.target.value.trim())}>
+                                            <option value={hospitalTown} hidden>{hospitalTown}</option>
+                                            {Towns.map(x =>
+                                                <option key={x} value={x}>{x}</option>
+                                            )}
+                                        </select>
+                                        <small className="text-danger form-text">
+                                            {hospitalTownError}
                                         </small>
                                     </div>
 
                                     {
-                                        userData?.imageUrl && progress === 0
+                                        doctorData?.image && progress === 0
                                             ? <button type="submit" className="btn mt-5 btn-primary">
                                                 Edit
                                             </button>

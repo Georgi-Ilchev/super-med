@@ -67,7 +67,7 @@ const BecomeDoctor = () => {
         }
 
         if (describe.length < 20) {
-            setDescribeError('Describe must be minimum 20 characters!');
+            setDescribeError('Description must be minimum 20 characters!');
             formIsValid = false;
         }
 
@@ -149,7 +149,7 @@ const BecomeDoctor = () => {
 
     // call force-update when image is uploaded last in the form. (need re-render component, to get image url if it uploaded last);
     const forceUpdate = useCallback(() => updateState({}), []);
-    
+
     useEffect(() => {
         if (location.state == null) {
             navigate('/');

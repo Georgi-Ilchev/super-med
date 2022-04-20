@@ -152,7 +152,7 @@ const DoctorAccountPage = () => {
                                     <h6 className="mb-0">Hospital address</h6>
                                 </div>
                                 <div className="col-sm-9 text-secondary">
-                                    {doctorData?.hospitalAddres}
+                                    {doctorData?.hospitalAddress}
                                 </div>
                             </div>
                             <hr />

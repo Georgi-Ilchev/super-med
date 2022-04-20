@@ -31,7 +31,7 @@ const BecomeDoctorCard = ({
                 email: data.userEmail,
                 education: data.education,
                 hospitalName: data.hospitalName,
-                hospitalAddres: data.hospitalAddres,
+                hospitalAddress: data.hospitalAddres,
                 workSchedule: data.workSchedule,
                 image: data.imageUrl,
             });
