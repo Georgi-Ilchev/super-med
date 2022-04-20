@@ -118,7 +118,7 @@ const CreateAppointment = () => {
                 date: date,
                 hour: hour,
                 status: 'active',
-                address: doctorData.hospitalAddres,
+                address: doctorData.hospitalAddress,
                 hospital: doctorData.hospitalName
             });
 
@@ -183,7 +183,7 @@ const CreateAppointment = () => {
                         <h5 className="card-title text-center">Make your appointment with {doctorData?.fullName}</h5>
                         <hr />
                         <p className="card-text">Hospital: {doctorData?.hospitalName}</p>
-                        <p className="card-text">Address: {doctorData?.hospitalAddres}</p>
+                        <p className="card-text">Address: {doctorData?.hospitalAddress}</p>
                         <hr />
                         <p className="card-text"><small className="text-muted">Pick a date from calendar</small></p>
                         {date

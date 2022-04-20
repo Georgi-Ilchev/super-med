@@ -42,7 +42,7 @@ const DoctorDetails = () => {
                         <p className="card-text"><span className="doctor-details-span">Graduated at:</span> {doctorData?.education}</p>
                         <p className="card-text"><span className="doctor-details-span">Age:</span> {doctorData?.age}</p>
                         <p className="card-text"><span className="doctor-details-span">Hospital:</span> {doctorData?.hospitalName}</p>
-                        <p className="card-text"><span className="doctor-details-span">Addres:</span> {doctorData?.hospitalAddress}</p>
+                        <p className="card-text"><span className="doctor-details-span">Address:</span> {doctorData?.hospitalAddress}</p>
                         <p className="card-text"><span className="doctor-details-span">Email:</span> {doctorData?.email}</p>
                         <p className="card-text"><span className="doctor-details-span">Phone:</span> {doctorData?.phone}</p>
                         <hr />

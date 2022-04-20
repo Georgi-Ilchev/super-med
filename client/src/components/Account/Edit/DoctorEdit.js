@@ -210,8 +210,6 @@ const DoctorEditProfile = () => {
         })();
     }, [currentUser?.uid]);
 
-    console.log(education);
-
     return (
         <div>
             {modalInfo === ''
